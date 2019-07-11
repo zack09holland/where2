@@ -32,6 +32,7 @@
                     <div class="card-body">
                         <div>
                             <label for="start">Start date:</label>
+                            <!-- Javascript determine today's date and replace Value -->
                             <input type="date" id="start" name="trip-start"
                                     value="2019-07-10"
                                     min="2019-07-10" max="2020-12-31">
@@ -43,9 +44,9 @@
                             <input type="text" id="destination" name="trip-destination"
                                     value="...">
                             <label for="radius">Search Radius:</label>
-                            <input type="number" name="radius" min="10" max="100" step="10" value="10">
+                            <input type="number" id="radius" name="trip-radius" min="10" max="100" step="10" value="10">
                             <br>
-                            <btn class="btn btn-primary"><span>Search...</span></btn>
+                            <btn class="btn btn-primary" id="submit"><span>Search...</span></btn>
                         </div>
                     </div>
                 </div>
