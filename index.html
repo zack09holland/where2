@@ -13,6 +13,45 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+    <header class="mb-3">
+        <nav class="navbar navbar-light bg-light">
+            <div class="container">
+                <div class="row w-100">
+                    <div class="col-12 col-md-10 offset-md-1 col-xl-12 offset-xl-0">
+                        <span class="navbar-brand  h1">WHERE2</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-10 offset-md-1 col-xl-12 offset-xl-0">
+                <div class="card">
+                    <h5 class="card-header">Travel Details</h5>
+                    <div class="card-body">
+                        <div>
+                            <label for="start">Start date:</label>
+                            <input type="date" id="start" name="trip-start"
+                                    value="2019-07-10"
+                                    min="2019-07-10" max="2020-12-31">
+                            <label for="start">End date:</label>
+                            <input type="date" id="end" name="trip-start"
+                                    value="2019-07-10"
+                                    min="2019-07-10" max="2020-12-12">
+                            <label for="location">Destination:</label>
+                            <input type="text" id="destination" name="trip-destination"
+                                    value="...">
+                            <label for="radius">Search Radius:</label>
+                            <input type="number" name="radius" min="10" max="100" step="10" value="10">
+                            <br>
+                            <btn class="btn btn-primary"><span>Search...</span></btn>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Loading Jquery SDK from CDN -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!-- Loading Moment SDK from CDN -->
