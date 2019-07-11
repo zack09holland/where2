@@ -1,13 +1,14 @@
 /// Javascript Code Below
-
+var that = this;
+var searchParams = {};
 $('#submit').on("click", function(){
-    var searchParams = {
+    that.searchParams = {
         start :  $('#start').val().trim(),
         end: $('#end').val().trim(),
         destination: $('#destination').val().trim(),
         radius: $('#radius').val().trim()
     }
     console.log(
-        searchParams
+        that.searchParams
     )
 })
