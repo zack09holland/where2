@@ -98,6 +98,26 @@ var where2Application = {
                 console.table(data)
             });
         }
+    },
+    yelpAPI : {
+        searchParams : {
+            url: "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?",
+            count: 10
+        },
+        queryYelp : function(){
+            queryUrl = this.searchParams.url+"location="+that.where2Application.searchParams.destination;
+            $.ajax({
+                headers: {
+                    "Authorization": "Bearer nKNSGBXfE2merLDsLJybUbAq_v2hXvOPf2IIt23CaozaMvdZOUD06OHtvA5NAO2rgX7ryLGcd-m3jOPs7Xy_Y_wxcmJyPOws-kp4tOspc9yTvj_xt4yBtLjHxakmXXYx"
+                },
+                url: queryUrl,
+                method: "get"
+            }).then(function(data){
+                console.log(data)
+                console.log(queryUrl)
+            });
+        }
+        
     }
 };
 $('#submit').on("click", function(){
@@ -108,8 +128,8 @@ $('#submit').on("click", function(){
     console.log(that.where2Application.searchParams)
     that.where2Application.zomatoApi.queryZomato()
     that.where2Application.eventbriteAPI.queryEventbrite()
-})
-
+    that.where2Application.yelpAPI.queryYelp()
+});
 
 
 var input = document.getElementById('locationAutocomplete');
