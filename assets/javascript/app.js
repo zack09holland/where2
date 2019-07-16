@@ -137,6 +137,12 @@ var where2Application = {
     },
     // Eventbrite API
     eventbriteAPI : {
+        eventObject : {
+            eventImg : "",
+            eventName : "",
+            eventDate : "",
+            eventTicketLink : ""
+        },
         searchParams : {
             url: "https://www.eventbriteapi.com/v3/events/search",
             count: 10
@@ -148,8 +154,6 @@ var where2Application = {
                         "&location.within="+that.where2Application.searchParams.radius+"mi"+"&expand=venue"+
                         "&start_date.range_start="+ moment(that.where2Application.searchParams.start).format('YYYY-MM-DD')+"T00:00:01Z"+
                         "&start_date.range_end="+moment(that.where2Application.searchParams.end).format('YYYY-MM-DD')+"T00:00:01Z";
-            
-            console.log(moment(that.where2Application.searchParams.end).format('YYYY-MM-DDThh:mm:ssZ'));
             console.log(queryURL)
             $.ajax({
                 headers: {
@@ -161,22 +165,23 @@ var where2Application = {
             }).then(function(data){
                 console.log("Eventbrite event data: ");
                 console.log(data.events);
-                // eventObject = {
-                //     eventImg : "",
-                //     eventName : "",
-                //     eventDate : "",
-                //     eventTicketLink : ""
-                // }
-                // for(var i=0; data.events[i]<1; i++){
-                //     eventObject.eventImg = data.events[i].logo.url;
-                //     console.log(data.events[i].logo.url);
-                //     eventObject.eventName = data.events[i].name.text;
-                //     eventObject.eventDate = data.events[i].start.local;
-                //     eventObject.eventTicketLink = data.events[i].start.url;
-                // }
-                // console.log(eventObject);
+
+                for(var i=0; i<data.events[i].length; i++){
+                    this.eventObject.eventImg = data.events[i].logo.url;
+                    //console.log(data.events[i].logo.url);
+                    this.eventObject.eventName = data.events[i].name.text;
+                    this.eventObject.eventDate = data.events[i].start.local;
+                    this.eventObject.eventTicketLink = data.events[i].start.url;
+                }
+
+                //console.log(this.eventObject.eventImg);
+                console.log(data.events[i].start.local);
+                console.log(data.events[i].name.text);
+                console.log(data.events[i].logo.url);
+                
             });
         }
+        
     },
     yelpAPI : {
         searchParams : {
@@ -194,7 +199,7 @@ var where2Application = {
             }).then(function(data){
                 console.log("Yelp API data: ")
                 console.log(data)
-                //console.log(queryUrl)
+                
             });
         }
         
