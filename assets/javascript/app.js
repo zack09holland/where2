@@ -5,9 +5,11 @@ var where2Application = {
         start : "",
         end : "",
         destination : "",
+        destinationArray : [],
         city : "",
         state : "",
         country : "",
+        countryLongName : "",
         radius : 0,
         lat : 0,
         lng : 0
@@ -36,23 +38,100 @@ var where2Application = {
         $("#end").attr("max",(yyyy + 1) + "-" + mm +"-" +dd)
     },
     // Zomato API
-    zomatoApi : {
+    zomatoApis : {
         searchParams : {
-            url: "https://developers.zomato.com/api/v2.1/cities?",
-            count: 10
+            //API uses
+            // q query by city name; lat query by latitude; lon query by longitude; count # of results to return; city_ids comma seperated city_id values
+            citiesAPIurl: "https://developers.zomato.com/api/v2.1/cities?",
+            //city_id using the city id from cities; lat query by latitude; lon query by longitude
+            collectionsAPIurl: "https://developers.zomato.com/api/v2.1/collections?",
+            //city_id using the city id from cities; lat query by latitude; lon query by longitude
+            cuisinesAPIurl: "https://developers.zomato.com/api/v2.1/cuisines?",
+            //city_id using the city id from cities; lat query by latitude; lon query by longitude
+            establishmentsAPIurl: "https://developers.zomato.com/api/v2.1/establishments?",
+            //Get Foodie and Nightlife Index, list of popular cuisines and nearby restaurants
+            //lat query by latitude; lon query by longitude
+            geocodeAPIurl: "https://developers.zomato.com/api/v2.1/geocode?",
+            // query query by city name; lat query by latitude; lon query by longitude; count # of results to return; city_ids comma seperated city_id values
+            locationAPIurl: "https://developers.zomato.com/api/v2.1/locations?",
+            // using the location ID from above get information
+            //
+            locationDetailsAPIurl: "https://developers.zomato.com/api/v2.1/location_details?",
+            count: 100,
+            country_id : "",
+            city_id : "",
+            entity_id : "",
+            entity_type : "",
         },
-        queryZomato : function () {
-            queryUrl = this.searchParams.url + "q=" + that.where2Application.searchParams.destination + "&lat=" + that.where2Application.searchParams.lat + "&lng=" + that.where2Application.searchParams.lng + "&count=" + this.searchParams.count
+        queryZomatoCities : function () {
+            queryUrl = this.searchParams.locationAPIurl + "query=" + that.where2Application.searchParams.destination + "&lat=" + that.where2Application.searchParams.lat + "&lon=" + that.where2Application.searchParams.lng + "&count=" + this.searchParams.count
             queryUrl = encodeURI(queryUrl)
             $.ajax({
                 headers: {
-                    'user-key':'03136f6b258dbdebd5478a174180a71f'
+                    'user-key':'03136f6b258dbdebd5478a174180a71f',
+                    'Content-Type' : 'application/json'
                 },
                 url: queryUrl,
                 method: "get"
             }).then(function(data){
+                console.log("zomatoCities: ")
                 console.log(data)
-                console.log(queryUrl)
+                if(data["location_suggestions"].length === 1){
+                    
+                    that.where2Application.zomatoApis.searchParams["entity_id"] = data["location_suggestions"][0]["entity_id"]
+                    that.where2Application.zomatoApis.searchParams["entity_type"] = data["location_suggestions"][0]["entity_type"]
+                    that.where2Application.zomatoApis.searchParams["country_id"] = data["location_suggestions"][0]["country_id"]
+                    that.where2Application.zomatoApis.searchParams["city_id"] = data["location_suggestions"][0]["city_id"]
+
+                    that.where2Application.zomatoApis.queryZomatoCollections();
+                    that.where2Application.zomatoApis.queryZomatoGeocode();
+                    that.where2Application.zomatoApis.queryZomatoLocationsDetails();
+                }
+            });
+        },
+        queryZomatoCollections : function () {
+            queryUrl = this.searchParams.collectionsAPIurl + "city_id=" + this.searchParams.city_id
+            queryUrl = encodeURI(queryUrl)
+            $.ajax({
+                headers: {
+                    'user-key':'03136f6b258dbdebd5478a174180a71f',
+                    'Content-Type' : 'application/json'
+                },
+                url: queryUrl,
+                method: "get"
+            }).then(function(data){
+                console.log("zomatoCollections: ")
+                console.log(data)
+            });
+        },
+        queryZomatoGeocode : function () {
+            queryUrl = this.searchParams.geocodeAPIurl + "lat=" + that.where2Application.searchParams.lat + "&lon=" + that.where2Application.searchParams.lng
+            queryUrl = encodeURI(queryUrl)
+            $.ajax({
+                headers: {
+                    'user-key':'03136f6b258dbdebd5478a174180a71f',
+                    'Content-Type' : 'application/json'
+                },
+                url: queryUrl,
+                method: "get"
+            }).then(function(data){
+                console.log("zomatoGeocode: ")
+                console.log(data)
+            });
+        },
+        queryZomatoLocationsDetails : function () {
+            queryUrl = this.searchParams.locationDetailsAPIurl + "entity_id=" + this.searchParams.entity_id + "&entity_type=" + this.searchParams.entity_type
+            queryUrl = encodeURI(queryUrl)
+            $.ajax({
+                headers: {
+                    'user-key':'03136f6b258dbdebd5478a174180a71f',
+                    'Content-Type' : 'application/json'
+                },
+                url: queryUrl,
+                method: "get"
+            }).then(function(data){
+                console.log("zomatoLocationDetails")
+                console.log(data)
             });
         }
     },
@@ -103,10 +182,9 @@ var where2Application = {
 $('#submit').on("click", function(){
     that.where2Application.searchParams.start = $('#start').val().trim(),
     that.where2Application.searchParams.end = $('#end').val().trim(),
-    that.where2Application.searchParams.destination = $('#locationAutocomplete').val().trim(),
     that.where2Application.searchParams.radius = $('#radius').val().trim()
     console.log(that.where2Application.searchParams)
-    that.where2Application.zomatoApi.queryZomato()
+    that.where2Application.zomatoApis.queryZomatoCities()
     that.where2Application.eventbriteAPI.queryEventbrite()
 })
 
@@ -115,9 +193,21 @@ $('#submit').on("click", function(){
 var input = document.getElementById('locationAutocomplete');
 var autocomplete = new google.maps.places.Autocomplete(input,{types: ['(cities)']});
 google.maps.event.addListener(autocomplete, 'place_changed', function(){
-   var place = autocomplete.getPlace();
-   console.log(place);
+   var place = autocomplete.getPlace()
    that.where2Application.searchParams.destination = place["formatted_address"]
+   console.log(place);
+   console.log(place["adr_address"])
+   that.where2Application.searchParams.destinationArray = that.where2Application.searchParams.destination.split(", ")
+
+   if(that.where2Application.searchParams.destinationArray.length == 2){
+        that.where2Application.searchParams.city = that.where2Application.searchParams.destinationArray[0]
+        that.where2Application.searchParams.country = that.where2Application.searchParams.destinationArray[1]
+    } else {
+        that.where2Application.searchParams.city = that.where2Application.searchParams.destinationArray[0]
+        that.where2Application.searchParams.region = that.where2Application.searchParams.destinationArray[1]
+        that.where2Application.searchParams.country = that.where2Application.searchParams.destinationArray[2]
+    }
+
    console.log(place["formatted_address"]);
    that.where2Application.searchParams.lat = Number.parseFloat(place.geometry.location.lat()).toFixed(4)
    that.where2Application.searchParams.lng = Number.parseFloat(place.geometry.location.lng()).toFixed(4)
