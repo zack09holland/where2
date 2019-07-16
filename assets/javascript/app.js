@@ -159,6 +159,7 @@ var where2Application = {
                 method: "get"
                 
             }).then(function(data){
+                console.log("Eventbrite event data: ");
                 console.log(data.events);
                 // eventObject = {
                 //     eventImg : "",
@@ -174,7 +175,6 @@ var where2Application = {
                 //     eventObject.eventTicketLink = data.events[i].start.url;
                 // }
                 // console.log(eventObject);
-                console.table(data)
             });
         }
     },
@@ -192,8 +192,9 @@ var where2Application = {
                 url: queryUrl,
                 method: "get"
             }).then(function(data){
+                console.log("Yelp API data: ")
                 console.log(data)
-                console.log(queryUrl)
+                //console.log(queryUrl)
             });
         }
         
