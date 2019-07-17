@@ -190,13 +190,68 @@ var where2Application = {
                 url: queryUrl,
                 method: "get"
             }).then(function(data){
-                console.log("Yelp API data: ")
-                console.log(data)
+                console.log("Yelp API data: ");
+                var yelpBusinesses = data.businesses;
+                renderYelpData(yelpBusinesses);
+                /*
+                for(var i = 0; i < yelpBusinesses.length; i++) {
+                    var cardLink = $('<a class="card-link">');
+                    var cardDiv = $('<div class="card card-item">');
+                    var img = $('<img class="card-img-left">');
+                    var cardBody = $('<div class="card-body">');
+                    var cardTitle = $('<h3 class="h5 card-title">');
+                    var cardText = $('<p class="card-text">');
+
+                    cardTitle.text(yelpBusinesses[i].name);
+
+                    var yelpAddress = yelpBusinesses[i].location.address1 + ' ' + yelpBusinesses[i].location.address2 + ' ' + yelpBusinesses[i].location.address3;
+                    var yelpCityStateCountryZip = yelpBusinesses[i].location.city + ', ' + yelpBusinesses[i].location.state + ', ' + yelpBusinesses[i].location.country + ', ' + yelpBusinesses[i].location.zip_code;
+                    var displayPhone = yelpBusinesses[i].display_phone;
+                    var price = 'Price: ' + yelpBusinesses[i].price;
+                    var rating = 'Rating: ' + yelpBusinesses[i].rating;
+                    var reviewCount = 'Review Count: ' + yelpBusinesses[i].review_count;
+
+                    cardText
+                        .append(yelpAddress)
+                        .append('<br />')
+                        .append(yelpCityStateCountryZip)
+                        .append('<br />')
+                        .append(displayPhone)
+                        .append('<br />')
+                        .append(price)
+                        .append('<br />')
+                        .append(rating)
+                        .append('<br />')
+                        .append(reviewCount);
+
+                    cardBody
+                        .append(cardTitle)
+                        .append(cardText);
+                    img.attr({
+                            src: yelpBusinesses[i].image_url,
+                            alt: yelpBusinesses[i].name
+                        });
+                    cardDiv
+                        .append(img)
+                        .append(cardBody);  
+                    
+                    cardLink
+                        .attr({
+                            target: '_blank',
+                            href: yelpBusinesses[i].url
+                        }); 
+                    
+                    cardLink.append(cardDiv);    
+                        
+                    $yelpRestaurants.append(cardLink);
                 
+                }
+                */
             });
         }
         
     }
+
 };
 $('#submit').on("click", function(){
     that.where2Application.searchParams.start = $('#start').val().trim(),
@@ -243,6 +298,55 @@ function renderEvent(queryData) {
             "</div>"   
         $("#collapseOne").append(eventCard);
     }
+}
+
+function renderYelpData(queryData) {
+    for(var i = 0; i < queryData.length; i++) {
+
+        var placeholder = 'placeholder';
+
+        var yelpImg = queryData[i].image_url;
+        var yelpBusinessName = queryData[i].name;
+        var yelpAddress = queryData[i].location.address1 + ' ' + queryData[i].location.address2 + ' ' + queryData[i].location.address3;
+        var yelpCityStateCountryZip = queryData[i].location.city + ', ' + queryData[i].location.state + ', ' + queryData[i].location.country + ', ' + queryData[i].location.zip_code;
+        var displayPhone = queryData[i].display_phone;
+        var price = 'Price: ' + queryData[i].price;
+        var rating = 'Rating: ' + queryData[i].rating;
+        var reviewCount = 'Review Count: ' + queryData[i].review_count;
+        var yelpPage = queryData[i].url;
+    
+        var yelpCard =
+        "<div class='container-fluid'>"+
+            "<div class='row'>"+
+                "<div class='col-12 mt-3'>"+
+                    "<div class='card shadow-lg'>"+
+                        "<div class='row m-0'>"+
+                            "<div class='col-6 col-md-4 m-auto'>"+
+                                "<img class='img-responsive m-auto' src= " + yelpImg + " alt='Card image cap'>"+
+                            "</div>"+
+                            "<div class='col-6 col-md-8'>"+
+                                "<div class='card-body'>"+
+                                    "<p class='card-text card-line'>"+"<strong>"+yelpBusinessName+"</strong></p>"+
+                                    "<p class='card-text card-line'>"+yelpAddress+"<br />" + yelpCityStateCountryZip + "</p>" +
+                                    "<p class='card-text card-line'>" + displayPhone + "</p>" +
+                                    "<p class='card-text card-line'>" + price + "</p>" +
+                                    "<p class='card-text card-line'>" + rating + "</p>" +
+                                    "<p class='card-text card-line'>" + reviewCount + "</p>" +
+                                    "<a class='card-text card-line' href="+yelpPage+" target='_blank'>Yelp Page</a>"+
+                                "</div>"+
+                            "</div>"+
+                        "</div>"+
+                        "<div class='card-footer'>"+
+                            "<small class='text-muted'>Last updated 3 mins ago</small>"
+                        "</div>"+
+                    "</div>"+
+                "</div>"+
+            "</div>"+
+        "</div>"   
+    $("#yelp-data-wrapper").append(yelpCard);    
+
+    }
+
 }
 
 var input = document.getElementById('locationAutocomplete');
