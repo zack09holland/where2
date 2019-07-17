@@ -193,65 +193,9 @@ var where2Application = {
                 console.log("Yelp API data: ");
                 var yelpBusinesses = data.businesses;
                 renderYelpData(yelpBusinesses);
-                /*
-                for(var i = 0; i < yelpBusinesses.length; i++) {
-                    var cardLink = $('<a class="card-link">');
-                    var cardDiv = $('<div class="card card-item">');
-                    var img = $('<img class="card-img-left">');
-                    var cardBody = $('<div class="card-body">');
-                    var cardTitle = $('<h3 class="h5 card-title">');
-                    var cardText = $('<p class="card-text">');
-
-                    cardTitle.text(yelpBusinesses[i].name);
-
-                    var yelpAddress = yelpBusinesses[i].location.address1 + ' ' + yelpBusinesses[i].location.address2 + ' ' + yelpBusinesses[i].location.address3;
-                    var yelpCityStateCountryZip = yelpBusinesses[i].location.city + ', ' + yelpBusinesses[i].location.state + ', ' + yelpBusinesses[i].location.country + ', ' + yelpBusinesses[i].location.zip_code;
-                    var displayPhone = yelpBusinesses[i].display_phone;
-                    var price = 'Price: ' + yelpBusinesses[i].price;
-                    var rating = 'Rating: ' + yelpBusinesses[i].rating;
-                    var reviewCount = 'Review Count: ' + yelpBusinesses[i].review_count;
-
-                    cardText
-                        .append(yelpAddress)
-                        .append('<br />')
-                        .append(yelpCityStateCountryZip)
-                        .append('<br />')
-                        .append(displayPhone)
-                        .append('<br />')
-                        .append(price)
-                        .append('<br />')
-                        .append(rating)
-                        .append('<br />')
-                        .append(reviewCount);
-
-                    cardBody
-                        .append(cardTitle)
-                        .append(cardText);
-                    img.attr({
-                            src: yelpBusinesses[i].image_url,
-                            alt: yelpBusinesses[i].name
-                        });
-                    cardDiv
-                        .append(img)
-                        .append(cardBody);  
-                    
-                    cardLink
-                        .attr({
-                            target: '_blank',
-                            href: yelpBusinesses[i].url
-                        }); 
-                    
-                    cardLink.append(cardDiv);    
-                        
-                    $yelpRestaurants.append(cardLink);
-                
-                }
-                */
             });
         }
-        
     }
-
 };
 $('#submit').on("click", function(){
     that.where2Application.searchParams.start = $('#start').val().trim(),
