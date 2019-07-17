@@ -165,15 +165,8 @@ var where2Application = {
             }).then(function(data){
                 console.log("Eventbrite event data: ");
                 console.log(data.events);
-
-                for(var i=0; i<data.events[i].length; i++){
-                    this.eventObject.eventImg = data.events[i].logo.url;
-                    //console.log(data.events[i].logo.url);
-                    this.eventObject.eventName = data.events[i].name.text;
-                    this.eventObject.eventDate = data.events[i].start.local;
-                    this.eventObject.eventTicketLink = data.events[i].start.url;
-                }
-
+                renderEvent(data.events)
+        
                 //console.log(this.eventObject.eventImg);
                 console.log(data.events[i].start.local);
                 console.log(data.events[i].name.text);
@@ -214,7 +207,43 @@ $('#submit').on("click", function(){
     that.where2Application.eventbriteAPI.queryEventbrite()
     that.where2Application.yelpAPI.queryYelp()
 });
+function renderEvent(queryData) {
+    //$("#gifContainer").empty();
+    for (var i = 0; i < queryData.length; i++) {
+        var eventAddress = queryData[i].venue.address.address_1+", "+queryData[i].venue.address.localized_area_display;
+        var eventDate = queryData[i].start.local;
+        var eventName = queryData[i].name.text;
+        var eventImg = queryData[i].logo.url;
+        var eventURL = queryData[i].url;
 
+        var eventCard =
+            "<div class='container-fluid'>"+
+                "<div class='row'>"+
+                    "<div class='col-12 mt-3'>"+
+                        "<div class='card shadow-lg'>"+
+                            "<div class='row m-0'>"+
+                                "<div class='col-6 col-md-4 m-auto'>"+
+                                    "<img class='img-responsive m-auto' src= " + eventImg + " alt='Card image cap'>"+
+                                "</div>"+
+                                "<div class='col-6 col-md-8'>"+
+                                    "<div class='card-body'>"+
+                                        "<p class='card-text card-line'>"+"<strong>"+eventName+"</strong></p>"+
+                                        "<p class='card-text card-line'>"+"<small>"+eventAddress+"</small></p>"+
+                                        "<p class='card-text card-line'>"+moment(eventDate).format("LLL")+"</p>"+
+                                        "<a class='card-text card-line' href="+eventURL+">Tickets</a>"+
+                                    "</div>"+
+                                "</div>"+
+                            "</div>"+
+                            "<div class='card-footer'>"+
+                                "<small class='text-muted'>Last updated 3 mins ago</small>"
+                            "</div>"+
+                        "</div>"+
+                    "</div>"+
+                "</div>"+
+            "</div>"   
+        $("#collapseOne").append(eventCard);
+    }
+}
 
 var input = document.getElementById('locationAutocomplete');
 var autocomplete = new google.maps.places.Autocomplete(input,{types: ['(cities)']});
