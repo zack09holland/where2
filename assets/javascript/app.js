@@ -246,9 +246,6 @@ function renderEvent(queryData) {
 
 function renderYelpData(queryData) {
     for(var i = 0; i < queryData.length; i++) {
-
-        var placeholder = 'placeholder';
-
         var yelpImg = queryData[i].image_url;
         var yelpBusinessName = queryData[i].name;
         var yelpAddress = queryData[i].location.address1 + ' ' + queryData[i].location.address2 + ' ' + queryData[i].location.address3;
