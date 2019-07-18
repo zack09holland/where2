@@ -1,3 +1,6 @@
+html {
+	scroll-behavior: smooth;
+}
 .img-responsive{
     width: 100%;
     height: auto;
@@ -6,4 +9,33 @@
 .card-line{
     padding: 0;
     margin: 0
+}
+.headerImg{
+    width: 100%;
+}
+#carouselExampleSlidesOnly{
+    position: relative;
+}
+.carousel-item{
+    height: 537px;
+    width: 100%;
+}
+.carousel-inner .carousel-item {
+    transition: -webkit-transform 2s;
+    transition: transform 2s;
+    transition: transform 2s , -webkit-transform 2s;
+  }
+#locationAutocomplete{
+    z-index: 2;
+}
+
+div.form-group{
+    position:absolute;
+    z-index:1;
+    top:100px; /* change to whatever you want */
+    width: 960px;
+    margin: 0 auto;
+    left:0;
+    right:0;
+    bottom:auto;
 }

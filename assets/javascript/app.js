@@ -210,7 +210,12 @@ $('#submit').on("click", function(){
 function renderEvent(queryData) {
     //$("#gifContainer").empty();
     for (var i = 0; i < queryData.length; i++) {
-        var eventAddress = queryData[i].venue.address.address_1+", "+queryData[i].venue.address.localized_area_display;
+        if(queryData[i].venue.address.address_1 === null){
+            var eventAddress = queryData[i].venue.address.localized_area_display;
+        }else{
+            var eventAddress = queryData[i].venue.address.address_1+", "+queryData[i].venue.address.localized_area_display;
+        }
+        
         var eventDate = queryData[i].start.local;
         var eventName = queryData[i].name.text;
         var eventImg = queryData[i].logo.url;
@@ -230,7 +235,7 @@ function renderEvent(queryData) {
                                         "<p class='card-text card-line'>"+"<strong>"+eventName+"</strong></p>"+
                                         "<p class='card-text card-line'>"+"<small>"+eventAddress+"</small></p>"+
                                         "<p class='card-text card-line'>"+moment(eventDate).format("LLL")+"</p>"+
-                                        "<a class='card-text card-line' href="+eventURL+">Tickets</a>"+
+                                        "<a class='card-text card-line' href="+eventURL+" target='_blank'>Tickets</a>"+
                                     "</div>"+
                                 "</div>"+
                             "</div>"+
@@ -290,7 +295,6 @@ function renderYelpData(queryData) {
     }
 
 }
-
 function renderZomatoGeocode(queryData) {
     var zomatoRestaurants = queryData.nearby_restaurants;
 
@@ -329,46 +333,16 @@ function renderZomatoGeocode(queryData) {
                 "</div>"+
             "</div>"+
         "</div>"   
-    // $("#geocode-location-details").append(ZomatoGeocodeLocationCard);    
     $("#geocode-location-details").append(ZomatoGeocodeLocationCard);    
 
     
 
 
-        // var ZomatoGeocodeRestaurantCard =
-        //     "<div class='container-fluid'>"+
-        //         "<div class='row'>"+
-        //             "<div class='col-12 mt-3'>"+
-        //                 "<div class='card shadow-lg'>"+
-        //                     "<div class='row m-0'>"+
-        //                         "<div class='col-6 col-md-4 m-auto'>"+
-                                
-        //                             "<img class='img-responsive m-auto' src= " + ZomatoGeocodeNearbyRestaurantFeaturedImage + " alt='Card image cap'>"+
-        //                         "</div>"+
-        //                         "<div class='col-6 col-md-8'>"
-        //                             "<div class='card-body'>"+
-        //                                 "<p class='card-text card-line'>"+"<strong>"+ZomatoGeocodeNearbyRestaurantName+"</strong></p>"+
-        //                                 "<p class='card-text card-line'>"+"<small>"+ZomatoGeocodeNearbyRestaurantAddress+"</small></p>"+
-        //                                 "<p class='card-text card-line'>"+"<small>"+ZomatoGeocodeNearbyRestaurantAveragecostfortwo+"</small></p>"+
-        //                                 "<p class='card-text card-line'>"+"<small>"+ZomatoGeocodeNearbyRestaurantPriceRange+"</small></p>"+
-        //                                 "<p class='card-text card-line'>"+"<small>"+ZomatoGeocodeNearbyRestaurantUserRating+"</small></p>"+
-        //                                 "<a class='card-text card-line' href="+ZomatoGeocodeNearbyRestaurantURL+">Zomato Page</a>"+
-        //                             "</div>"+
-        //                         "</div>"+
-        //                     "</div>"+
-        //                     "<div class='card-footer'>"+
-        //                         "<small class='text-muted'>Last updated 3 mins ago</small>"
-        //                     "</div>"+
-        //                 "</div>"+
-        //             "</div>"+
-        //         "</div>"+
-        //     "</div>"   
-        // $("#geocode-restaurant-results").append(ZomatoGeocodeRestaurantCard);
+        
 
     }
 }
-
-
+//      Location Auto Complete Code
 var input = document.getElementById('locationAutocomplete');
 var autocomplete = new google.maps.places.Autocomplete(input,{types: ['(cities)']});
 google.maps.event.addListener(autocomplete, 'place_changed', function(){
@@ -393,7 +367,6 @@ google.maps.event.addListener(autocomplete, 'place_changed', function(){
    console.log(that.where2Application.searchParams)
    console.log("Location: " + that.where2Application.searchParams.destination + "\n Lat: " + that.where2Application.searchParams.lat + "\n Lng: " + that.where2Application.searchParams.lng)
 })
-
 
 $(function(){
     that.where2Application.setDateValues();
