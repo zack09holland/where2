@@ -209,7 +209,12 @@ $('#submit').on("click", function(){
 function renderEvent(queryData) {
     //$("#gifContainer").empty();
     for (var i = 0; i < queryData.length; i++) {
-        var eventAddress = queryData[i].venue.address.address_1+", "+queryData[i].venue.address.localized_area_display;
+        if(queryData[i].venue.address.address_1 === null){
+            var eventAddress = queryData[i].venue.address.localized_area_display;
+        }else{
+            var eventAddress = queryData[i].venue.address.address_1+", "+queryData[i].venue.address.localized_area_display;
+        }
+        
         var eventDate = queryData[i].start.local;
         var eventName = queryData[i].name.text;
         var eventImg = queryData[i].logo.url;
@@ -229,7 +234,7 @@ function renderEvent(queryData) {
                                         "<p class='card-text card-line'>"+"<strong>"+eventName+"</strong></p>"+
                                         "<p class='card-text card-line'>"+"<small>"+eventAddress+"</small></p>"+
                                         "<p class='card-text card-line'>"+moment(eventDate).format("LLL")+"</p>"+
-                                        "<a class='card-text card-line' href="+eventURL+">Tickets</a>"+
+                                        "<a class='card-text card-line' href="+eventURL+" target='_blank'>Tickets</a>"+
                                     "</div>"+
                                 "</div>"+
                             "</div>"+
@@ -289,7 +294,34 @@ function renderYelpData(queryData) {
     }
 
 }
-
+///////////////////////////////////////////////////////////////////////////
+//      Smooth page scroll
+// $(document).ready(function(){
+//     // Add smooth scrolling to all links
+//     $("a").on('click', function(event) {
+  
+//       // Make sure this.hash has a value before overriding default behavior
+//       if (this.hash !== "") {
+//         // Prevent default anchor click behavior
+//         event.preventDefault();
+  
+//         // Store hash
+//         var hash = this.hash;
+  
+//         // Using jQuery's animate() method to add smooth page scroll
+//         // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+//         $('html, body').animate({
+//           scrollTop: $(hash).offset().top
+//         }, 800, function(){
+     
+//           // Add hash (#) to URL when done scrolling (default click behavior)
+//           window.location.hash = hash;
+//         });
+//       } // End if
+//     });
+//   });
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//      Location Auto Complete Code
 var input = document.getElementById('locationAutocomplete');
 var autocomplete = new google.maps.places.Autocomplete(input,{types: ['(cities)']});
 google.maps.event.addListener(autocomplete, 'place_changed', function(){
@@ -314,7 +346,6 @@ google.maps.event.addListener(autocomplete, 'place_changed', function(){
    console.log(that.where2Application.searchParams)
    console.log("Location: " + that.where2Application.searchParams.destination + "\n Lat: " + that.where2Application.searchParams.lat + "\n Lng: " + that.where2Application.searchParams.lng)
 })
-
 
 $(function(){
     that.where2Application.setDateValues();
