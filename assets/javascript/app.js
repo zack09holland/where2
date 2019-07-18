@@ -295,12 +295,10 @@ function renderZomatoGeocode(queryData) {
     var zomatoRestaurants = queryData.nearby_restaurants;
 
     for (var i = 0; i < zomatoRestaurants.length; i++) {
-    
-        var placeholder = 'blah';
 
         var name = zomatoRestaurants[i].restaurant.name;
         var imageUrl = zomatoRestaurants[i].restaurant.featured_image; 
-        var address = zomatoRestaurants[i].restaurant.address;
+        var address = zomatoRestaurants[i].restaurant.location.address;
         var cuisines = 'Cuisines: ' + zomatoRestaurants[i].restaurant.cuisines;
         var rating = 'Rating: ' +zomatoRestaurants[i].restaurant.user_rating.aggregate_rating;
         var restaurantLink = zomatoRestaurants[i].restaurant.url;
