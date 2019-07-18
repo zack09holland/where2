@@ -39,3 +39,20 @@ div.form-group{
     right:0;
     bottom:auto;
 }
+
+
+
+
+h3 {
+    font-size: 22px;
+    text-align: center;
+}
+.form-inline {
+    float: right;
+  display: inline-block;
+  margin-left:30px;
+  padding: 10px;
+  font-size: 15px;
+  margin-right: 30px;
+  background-color: skyblue;
+}
