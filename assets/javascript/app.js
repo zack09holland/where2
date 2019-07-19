@@ -120,10 +120,15 @@ var where2Application = {
                 },
                 url: queryUrl,
                 method: "get"
+            // Success callback function    
             }).then(function(data){
                 console.log("zomatoGeocode: ")
                 console.log(data.nearby_restaurants);
                 renderZomatoGeocode(data);
+            // Error callback function    
+            }, function() {
+                errorArr.push('no queryZomatoGeocode results');
+                console.log(errorArr);
             });
         },
         queryZomatoLocationsDetails : function () {
