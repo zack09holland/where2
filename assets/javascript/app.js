@@ -173,17 +173,14 @@ var where2Application = {
                 },
                 url: queryURL,
                 method: "get"
-                
+            // Evenbrite query success  
             }).then(function(data){
                 console.log("Eventbrite event data: ");
                 console.log(data.events);
-                renderEvent(data.events)
-        
-                //console.log(this.eventObject.eventImg);
-                // console.log(data.events[i].start.local);
-                // console.log(data.events[i].name.text);
-                // console.log(data.events[i].logo.url);
-                
+                renderEvent(data.events); 
+            // Evenbrite query fail      
+            }, function() {
+                errorArr.push('no queryEventbrite results');
             });
         }
         
