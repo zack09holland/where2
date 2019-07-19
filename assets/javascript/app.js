@@ -31,7 +31,8 @@ var where2Application = {
         countryLongName : "",
         radius : 0,
         lat : 0,
-        lng : 0
+        lng : 0,
+        verified : false,
     },
     setDateValues: function(){
         var startDate = new Date();
@@ -93,15 +94,11 @@ var where2Application = {
                 url: queryUrl,
                 method: "get"
             }).then(function(data){
-                console.log("zomatoCities: ")
-                console.log(data)
                 if(data["location_suggestions"].length === 1){
-                    
                     that.where2Application.zomatoApis.searchParams["entity_id"] = data["location_suggestions"][0]["entity_id"]
                     that.where2Application.zomatoApis.searchParams["entity_type"] = data["location_suggestions"][0]["entity_type"]
                     that.where2Application.zomatoApis.searchParams["country_id"] = data["location_suggestions"][0]["country_id"]
                     that.where2Application.zomatoApis.searchParams["city_id"] = data["location_suggestions"][0]["city_id"]
-
                     that.where2Application.zomatoApis.queryZomatoCollections();
                     that.where2Application.zomatoApis.queryZomatoGeocode();
                     that.where2Application.zomatoApis.queryZomatoLocationsDetails();
@@ -169,16 +166,26 @@ var where2Application = {
             eventTicketLink : ""
         },
         searchParams : {
-            url: "https://www.eventbriteapi.com/v3/events/search",
-            count: 10
+            url: "https://www.eventbriteapi.com/v3/events/search"
+        },
+        searchResults :{
+            count: 10,
+            perPage: 0,
+            pageNumber: 0,
+            pageCount: 0,
+            previousResult: ""
         },
         queryEventbrite : function() {
-
+            if(this.searchResults.previousResult)
+            {
+              console.log("EventContentExist")
+            }
             var queryURL = this.searchParams.url + 
                         "/?q=" + "&location.address="+that.where2Application.searchParams.destination +
                         "&location.within="+that.where2Application.searchParams.radius+"mi"+"&expand=venue"+
                         "&start_date.range_start="+ moment(that.where2Application.searchParams.start).format('YYYY-MM-DD')+"T00:00:01Z"+
-                        "&start_date.range_end="+moment(that.where2Application.searchParams.end).format('YYYY-MM-DD')+"T00:00:01Z";
+                        "&start_date.range_end="+moment(that.where2Application.searchParams.end).format('YYYY-MM-DD')+"T00:00:01Z"+
+                        "&page="+(this.searchResults.pageNumber + 1)
             console.log(queryURL)
             $.ajax({
                 headers: {
@@ -188,9 +195,11 @@ var where2Application = {
                 method: "get"
             // Evenbrite query success  
             }).then(function(data){
-                console.log("Eventbrite event data: ");
-                console.log(data.events);
-                renderEvent(data.events); 
+                that.where2Application.eventbriteAPI.searchResults.previousResult = data
+                that.where2Application.eventbriteAPI.searchResults.perPage = data.pagination["page_size"]
+                that.where2Application.eventbriteAPI.searchResults.pageNumber = data.pagination["page_number"]
+                that.where2Application.eventbriteAPI.searchResults.pageCount = data.pagination["page_count"]
+                renderEvent(data.events)               
             });
         }
         
@@ -222,13 +231,16 @@ var where2Application = {
     }
 };
 $('#submit').on("click", function(){
-    that.where2Application.searchParams.start = $('#start').val().trim(),
-    that.where2Application.searchParams.end = $('#end').val().trim(),
-    that.where2Application.searchParams.radius = $('#radius').val().trim()
-    console.log(that.where2Application.searchParams)
-    that.where2Application.zomatoApis.queryZomatoCities()
-    that.where2Application.eventbriteAPI.queryEventbrite()
-    that.where2Application.yelpAPI.queryYelp()
+    if(that.where2Application.searchParams.valid){
+        that.where2Application.searchParams.start = $('#start').val().trim(),
+        that.where2Application.searchParams.end = $('#end').val().trim(),
+        that.where2Application.searchParams.radius = $('#radius').val().trim()
+        
+        that.where2Application.zomatoApis.queryZomatoCities()
+        that.where2Application.eventbriteAPI.queryEventbrite()
+        that.where2Application.yelpAPI.queryYelp()
+        $("#contentDetails").show()
+    }
 });
 function renderEvent(queryData) {
     $("#collapseOne").empty();
@@ -352,7 +364,7 @@ function renderZomatoGeocode(queryData) {
                     "<div class='card shadow-lg'>"+
                         "<div class='row m-0'>"+
                             "<div class='col-6 col-md-4 m-auto'>"+
-                                "<img class='img-responsive m-auto' src= " + imageUrl + " alt='" + name + "'>"+
+                                "<img class='img-responsive m-auto' src='" + imageUrl + "' alt='" + name.replace(/[^a-zA-Z0-9]/g, "") + "'>"+
                             "</div>"+
                             "<div class='col-6 col-md-8'>"+
                                 "<div class='card-body'>"+
@@ -385,28 +397,35 @@ var input = document.getElementById('locationAutocomplete');
 var autocomplete = new google.maps.places.Autocomplete(input,{types: ['(cities)']});
 google.maps.event.addListener(autocomplete, 'place_changed', function(){
    var place = autocomplete.getPlace()
-   that.where2Application.searchParams.destination = place["formatted_address"]
-   console.log(place);
-   console.log(place["adr_address"])
-   that.where2Application.searchParams.destinationArray = that.where2Application.searchParams.destination.split(", ")
-
-   if(that.where2Application.searchParams.destinationArray.length == 2){
-        that.where2Application.searchParams.city = that.where2Application.searchParams.destinationArray[0]
-        that.where2Application.searchParams.country = that.where2Application.searchParams.destinationArray[1]
-    } else {
-        that.where2Application.searchParams.city = that.where2Application.searchParams.destinationArray[0]
-        that.where2Application.searchParams.region = that.where2Application.searchParams.destinationArray[1]
-        that.where2Application.searchParams.country = that.where2Application.searchParams.destinationArray[2]
-    }
-
-   console.log(place["formatted_address"]);
-   that.where2Application.searchParams.lat = Number.parseFloat(place.geometry.location.lat()).toFixed(4)
-   that.where2Application.searchParams.lng = Number.parseFloat(place.geometry.location.lng()).toFixed(4)
-   console.log(that.where2Application.searchParams)
-   console.log("Location: " + that.where2Application.searchParams.destination + "\n Lat: " + that.where2Application.searchParams.lat + "\n Lng: " + that.where2Application.searchParams.lng)
+   console.log(place)
+   if(place["place_id"]){
+        that.where2Application.searchParams.valid = true;
+        that.where2Application.searchParams.destination = place["formatted_address"]
+        that.where2Application.searchParams.destinationArray = that.where2Application.searchParams.destination.split(", ")
+        if(that.where2Application.searchParams.destinationArray.length == 2){
+                that.where2Application.searchParams.city = that.where2Application.searchParams.destinationArray[0]
+                that.where2Application.searchParams.country = that.where2Application.searchParams.destinationArray[1]
+            } else {
+                that.where2Application.searchParams.city = that.where2Application.searchParams.destinationArray[0]
+                that.where2Application.searchParams.region = that.where2Application.searchParams.destinationArray[1]
+                that.where2Application.searchParams.country = that.where2Application.searchParams.destinationArray[2]
+            }
+        that.where2Application.searchParams.lat = Number.parseFloat(place.geometry.location.lat()).toFixed(4)
+        that.where2Application.searchParams.lng = Number.parseFloat(place.geometry.location.lng()).toFixed(4)
+        console.log("Location: " + that.where2Application.searchParams.destination + "\n Lat: " + that.where2Application.searchParams.lat + "\n Lng: " + that.where2Application.searchParams.lng)
+   } else {
+    that.where2Application.searchParams.valid = false;
+   }
+   
 })
 
+$("#login").on("click", function(){
+    // The start method will wait until the DOM is loaded.
+    ui.start('#firebaseui-auth-container', uiConfig);
+});
+
 $(function(){
+    $("#contentDetails").hide()
     that.where2Application.setDateValues();
 });
 
@@ -420,3 +439,5 @@ function openNav() {
     document.getElementById("mySidebar").style.width = "0";
     document.getElementById("main").style.marginLeft = "0";
   }
+
+});
