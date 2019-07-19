@@ -140,6 +140,7 @@ var where2Application = {
                 // push in error message into
                 // errorArr
                 errorArr.push('no queryZomatoGeocode results');
+                noResultsErrorMsg();
             });
         },
         queryZomatoLocationsDetails : function () {
@@ -214,6 +215,7 @@ var where2Application = {
             // Yelp API fail    
             }, function() {
                 errorArr.push('no queryYelp results');
+                noResultsErrorMsg();
             });
         }
     }
@@ -235,6 +237,7 @@ function renderEvent(queryData) {
     // show there are no Eventbrite events
     if(queryData.length === 0) {
         errorArr.push('no Eventbrite results');
+        noResultsErrorMsg();
     }    
     else {
         for (var i = 0; i < queryData.length; i++) {
