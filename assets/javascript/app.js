@@ -276,7 +276,8 @@ function renderEvent(queryData) {
                             "</div>"+
                         "</div>"+
                     "</div>"+
-                "</div>"   
+                "</div>"
+            $('#collapseOne').empty();       
             $("#collapseOne").append(eventCard);
         }
 
@@ -323,6 +324,7 @@ function renderYelpData(queryData) {
                 "</div>"+
             "</div>"+
         "</div>"   
+    $("#yelp-data-wrapper").empty();    
     $("#yelp-data-wrapper").append(yelpCard);    
 
     }
@@ -365,7 +367,8 @@ function renderZomatoGeocode(queryData) {
                     "</div>"+
                 "</div>"+
             "</div>"+
-        "</div>"   
+        "</div>"  
+    $("#geocode-location-details").empty();     
     $("#geocode-location-details").append(ZomatoGeocodeLocationCard);    
 
     
