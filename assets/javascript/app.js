@@ -5,13 +5,11 @@
 // appear when doing a form search
 var errorArr = [];
 
-// If errorArr is length of 3 
-// (no Eventbrite results, no Yelp results, no Zomato results)
+// If no Eventbrite results, no Yelp results, or 
+// no Zomato results
 // then show error message
 function noResultsErrorMsg() {
-    if(errorArr.length === 3) {
-        $('#form-error-msgs').removeClass('d-none');
-    }
+    $('#form-error-msgs').removeClass('d-none');
 }
 
 // If APIs do show results (Eventbrite, Yelp, Zomato)
