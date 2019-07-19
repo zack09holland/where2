@@ -14,6 +14,10 @@ function noResultsErrorMsg() {
     }
 }
 
+function removeErrorMsgIfResults() {
+    $('#form-error-msgs').addClass('d-none');   
+}
+
 var that = this;
 var where2Application = {
     searchParams: {
