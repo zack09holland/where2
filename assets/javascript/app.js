@@ -1,23 +1,21 @@
 /// Javascript Code Below
 
-// Error array, that will fill
-// up with errors if a result doesn't 
-// appear when doing a form search
-var errorArr = [];
-
-// If errorArr is length of 3 
-// (no Eventbrite results, no Yelp results, no Zomato results)
+// If no Eventbrite results, no Yelp results, or 
+// no Zomato results
 // then show error message
 function noResultsErrorMsg() {
-    if(errorArr.length === 3) {
-        $('#form-error-msgs').removeClass('d-none');
-    }
+    $('#form-error-msgs').removeClass('d-none');
+    // Remove data from Eventbrite, Yelp, Zomato
+    // containers if error msg
+    $('#collapseOne').empty();
+    $('#yelp-data-wrapper').empty();
+    $('#geocode-location-details').empty();
 }
 
 // If APIs do show results (Eventbrite, Yelp, Zomato)
 // then remove form error message
 function removeErrorMsgIfResults() {
-    $('#form-error-msgs').addClass('d-none');   
+    $('#form-error-msgs').addClass('d-none');
 }
 
 var that = this;
@@ -143,10 +141,6 @@ var where2Application = {
                 renderZomatoGeocode(data);
             // Error callback function    
             }, function() {
-                // If no Zomato results
-                // push in error message into
-                // errorArr
-                errorArr.push('no queryZomatoGeocode results');
                 noResultsErrorMsg();
             });
         },
@@ -222,7 +216,6 @@ var where2Application = {
                 renderYelpData(yelpBusinesses);
             // Yelp API fail    
             }, function() {
-                errorArr.push('no queryYelp results');
                 noResultsErrorMsg();
             });
         }
@@ -238,13 +231,12 @@ $('#submit').on("click", function(){
     that.where2Application.yelpAPI.queryYelp()
 });
 function renderEvent(queryData) {
+    $("#collapseOne").empty();
     //$("#gifContainer").empty();
 
     // Check if queryData length is 0, or array is empty
-    // then push in message in errorArr to 
-    // show there are no Eventbrite events
+    // then show error messages
     if(queryData.length === 0) {
-        errorArr.push('no Eventbrite results');
         noResultsErrorMsg();
     }    
     else {
@@ -285,7 +277,7 @@ function renderEvent(queryData) {
                             "</div>"+
                         "</div>"+
                     "</div>"+
-                "</div>"   
+                "</div>"       
             $("#collapseOne").append(eventCard);
         }
 
@@ -293,6 +285,8 @@ function renderEvent(queryData) {
 }
 
 function renderYelpData(queryData) {
+    $("#yelp-data-wrapper").empty();
+
     for(var i = 0; i < queryData.length; i++) {
         var yelpImg = queryData[i].image_url;
         var yelpBusinessName = queryData[i].name;
@@ -331,13 +325,15 @@ function renderYelpData(queryData) {
                     "</div>"+
                 "</div>"+
             "</div>"+
-        "</div>"   
+        "</div>"      
     $("#yelp-data-wrapper").append(yelpCard);    
 
     }
 
 }
 function renderZomatoGeocode(queryData) {
+    $("#geocode-location-details").empty();
+
     var zomatoRestaurants = queryData.nearby_restaurants;
 
     for (var i = 0; i < zomatoRestaurants.length; i++) {
@@ -374,7 +370,7 @@ function renderZomatoGeocode(queryData) {
                     "</div>"+
                 "</div>"+
             "</div>"+
-        "</div>"   
+        "</div>"     
     $("#geocode-location-details").append(ZomatoGeocodeLocationCard);    
 
     
