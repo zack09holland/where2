@@ -22,7 +22,18 @@
             <div class="container">
                 <div class="row w-100">
                     <div class="col-12 col-md-10 offset-md-1 col-xl-12 offset-xl-0">
-                        <span class="navbar-brand  h1">WHERE2</span>
+                     <span class="navbar-brand  h1">WHERE2</span>
+                     <div id="mySidebar" class="sidebar">
+                            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                            <a href="#">Favorite Events</a>
+                            <a href="#">Favorite Restaurants</a>
+                            <a href="#">Favorite Places</a>
+                          </div>
+                          
+                          <div id="main">
+                            <button class="openbtn" onclick="openNav()">&#9776; My Favorites List</button> 
+            
+                          </div>
                     </div>
                 </div>
             </div>
@@ -32,32 +43,6 @@
     <div id="carouselExampleSlidesOnly" class="carousel slide " data-ride="carousel">
         <div class="form-group">
             <div class="col-md-10 offset-md-1 col-xl-12 offset-xl-0">
-                
-                
- <form class="form-inline">   
-        <h3> Log in </h3> 
-          <label for="email">Email:</label>
-          <label class="sr-only" for="inlineFormInputName2">Email:</label>
-          <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormInputName2" placeholder="Email" autocomplete="on">
-        
-          
-            <label for="password">Password: </label>
-          <label class="sr-only" for="inlineFormInputGroupUsername2">Password</label>
-          <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-          <div class="input-group-addon"></div>
-          <input type="text" class="form-control" id="inlineFormInputGroupUsername2" placeholder="Password">
-          </div>
-        
-          <div class="form-check mb-2 mr-sm-2 mb-sm-0">
-          <label class="form-check-label">
-          <input class="form-check-input" type="checkbox"> Remember me
-          </label>
-          </div>
-          <div align="middle">
-          <button type="submit" class="btn pull-right btn-primary">Submit</button>
-          </div>  </form>
-      </div>
-
 
                 <!-- First Card for Travel Details -->
                 <div class="card">
@@ -108,6 +93,7 @@
                             <!-- Search Button for Travel Details-->
                             <div class="text-left">
                                 <a href="#anchor"><btn class="btn btn-primary" id="submit"><span>Search...</span></btn></a>
+                                <h6 class="mt-3 d-none text-danger" id="form-error-msgs">There are no results. Please try again.</h6>
                             </div>
                         </div>
                     </div>
@@ -148,40 +134,9 @@
                                         </h2>
                                     </div>
                                     <!-- This is the Collapse Content that is Hidden -->
-                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                    <div id="collapseOne" class="collapse scrollable" aria-labelledby="headingOne"
                                         data-parent="#accordionExample">
-                                        <!-- Fluid Container for our Row of Data \ Card -->
-                                        <!-- Card Example Details  -->
-                                        <!-- Card Example Details  -->
-                                        <!-- Card Example Details  -->
-                                        <!-- <div class="container-fluid">
-                                        <div class="row">
-                                            <div class="col-12 mt-3">
-                                                <div class="card">
-                                                    <div class="row m-0">
-                                                        <div class="col-6 col-md-4 m-auto">
-                                                            <img class="img-responsive m-auto" src="https://s3-media3.fl.yelpcdn.com/bphoto/ijju-wYoRAxWjHPTCxyQGQ/o.jpg" alt="Card image cap">
-                                                        </div>
-                                                        <div class="col-6 col-md-8">
-                                                            <div class="card-body">
-                                                                <p class="card-text card-line"><strong>Title</strong></p>
-                                                                <p class="card-text card-line"><small>Location</small></p>
-                                                                <p class="card-text card-line">cuisine type</p>
-                                                                <p class="card-text card-line">brief description</p>
-                                                                <p class="card-text card-line">price</p><p class="card-text card-line">rating</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-footer">
-                                                        <small class="text-muted">Last updated 3 mins ago</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>                         -->
-                                        <!-- Card Example Details  -->
-                                        <!-- Card Example Details  -->
-                                        <!-- Card Example Details  -->
+                                        
                                     </div>
                                 </div>
                                 <!-- Card for Restaurant Results -->
@@ -197,7 +152,7 @@
                                         </h2>
                                     </div>
                                     <!-- This is the Collapse Content that is Hidden -->
-                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                    <div id="collapseTwo" class="collapse scrollable" aria-labelledby="headingTwo"
                                         data-parent="#accordionExample">
                                         <div class="card-body">
                                             <div id="yelp-data-wrapper"></div>
@@ -217,7 +172,7 @@
                                         </h2>
                                     </div>
                                     <!-- This is the Collapse Content that is Hidden -->
-                                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                    <div id="collapseThree" class="collapse scrollable" aria-labelledby="headingThree"
                                         data-parent="#accordionExample">
                                         <div class="card-body">
                                             Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
@@ -239,6 +194,9 @@
             </div>
         </div>
     </div>
+    <div class="filler">
+
+    </div>
     <!-- Moment JS File -->
     <script type="text/javascript" src="https://momentjs.com/downloads/moment.js"></script>
     <!-- Loading Jquery SDK from CDN -->
@@ -254,6 +212,7 @@
     <script type="text/javascript" src="https://www.gstatic.com/firebasejs/6.2.4/firebase-database.js"></script>
     <!-- Google Places API and Key-->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFRpKuar5ha4F7K-WntXWKtyntU28gWYk&libraries=places"></script>
+    
     <!-- Index.html Specific Javascript-->
     <script type="text/javascript" src="assets/javascript/app.js"></script>
 </body>
