@@ -5,12 +5,17 @@
 // then show error message
 function noResultsErrorMsg() {
     $('#form-error-msgs').removeClass('d-none');
+    // Remove data from Eventbrite, Yelp, Zomato
+    // containers if error msg
+    $('#collapseOne').empty();
+    $('#yelp-data-wrapper').empty();
+    $('#geocode-location-details').empty();
 }
 
 // If APIs do show results (Eventbrite, Yelp, Zomato)
 // then remove form error message
 function removeErrorMsgIfResults() {
-    $('#form-error-msgs').addClass('d-none');   
+    $('#form-error-msgs').addClass('d-none');
 }
 
 var that = this;
