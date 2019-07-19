@@ -36,8 +36,10 @@
                         </div>
                         <div class="text-left">
                             <a href="#anchor"><btn class="btn btn-info" id="login"><span>Login...</span></btn></a>
+                        <div class="text-left float-right" id="insertButton">
                         </div>
                         <div id="firebaseui-auth-container"></div>
+                        <div id="loader"></div>
                     </div>
                 </div>
             </div>
@@ -315,13 +317,17 @@
     <script type="text/javascript" src="https://www.gstatic.com/firebasejs/6.2.4/firebase-app.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/firebasejs/6.2.4/firebase-database.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/firebasejs/6.2.4/firebase-auth.js"></script>
-    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <script type="text/javascript" src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
 
     <!-- Google Places API and Key-->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFRpKuar5ha4F7K-WntXWKtyntU28gWYk&libraries=places"></script>
     
+    <!-- local FireBase initscript-->
+    <script type="text/javascript" src="assets/javascript/init-firebase.js"></script>
+
     <!-- Index.html Specific Javascript-->
     <script type="text/javascript" src="assets/javascript/app.js"></script>
+    
 </body>
 
 </html>

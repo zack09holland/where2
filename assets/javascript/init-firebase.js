@@ -21,13 +21,14 @@ var defaultApplication = firebase.initializeApp(firebaseConfig);
 
 /// Javascript Code Below
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
+console.log(ui)
 var uiConfig = {
     callbacks: {
         signInSuccessWithAuthResult: function(authResult, redirectUrl) {
             // User successfully signed in.
             // Return type determines whether we continue the redirect automatically
             // or whether we leave that to developer to handle.
-            return true;
+            return false;
         },
         uiShown: function() {
             // The widget is rendered.
@@ -37,7 +38,6 @@ var uiConfig = {
     },
     // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
     signInFlow: 'popup',
-    signInSuccessUrl: 'assets/html/landing.html',
     signInOptions: [
       // Leave the lines as is for the providers you want to offer your users.
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -50,8 +50,13 @@ var uiConfig = {
   };
 
 
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 
 firebase.auth().onAuthStateChanged(function(user) {
+  $("#insertButton").empty()
+  var mainButtonCode = $("<btn>")
+  mainButtonCode.attr("class","btn btn-secondary")
+  var buttonMsg = $("<span>")
   if (user) {
     // User is signed in.
     var displayName = user.displayName;
@@ -61,11 +66,17 @@ firebase.auth().onAuthStateChanged(function(user) {
     var isAnonymous = user.isAnonymous;
     var uid = user.uid;
     var providerData = user.providerData;
+    console.log("Who: " + displayName)
+    mainButtonCode.attr("id","signOut")
+    buttonMsg.text("Sign Out...")
     // ...
     console.log("User Authenticated")
   } else {
-    // User is signed out.
-    // ...
+    mainButtonCode.attr("id","login")
+    buttonMsg.text("Login...")
     console.log("User NOT Authenticated")
   }
+  mainButtonCode.append(buttonMsg)
+  $("#insertButton").append(mainButtonCode)
 });
+
