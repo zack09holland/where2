@@ -14,6 +14,8 @@ function noResultsErrorMsg() {
     }
 }
 
+// If APIs do show results (Eventbrite, Yelp, Zomato)
+// then remove form error message
 function removeErrorMsgIfResults() {
     $('#form-error-msgs').addClass('d-none');   
 }
@@ -137,6 +139,7 @@ var where2Application = {
             }).then(function(data){
                 console.log("zomatoGeocode: ")
                 console.log(data.nearby_restaurants);
+                removeErrorMsgIfResults();
                 renderZomatoGeocode(data);
             // Error callback function    
             }, function() {
@@ -215,6 +218,7 @@ var where2Application = {
             }).then(function(data){
                 console.log("Yelp API data: ");
                 var yelpBusinesses = data.businesses;
+                removeErrorMsgIfResults();
                 renderYelpData(yelpBusinesses);
             // Yelp API fail    
             }, function() {
@@ -244,6 +248,7 @@ function renderEvent(queryData) {
         noResultsErrorMsg();
     }    
     else {
+        removeErrorMsgIfResults();
         for (var i = 0; i < queryData.length; i++) {
             if(queryData[i].venue.address.address_1 === null){
                 var eventAddress = queryData[i].venue.address.localized_area_display;
