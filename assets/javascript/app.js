@@ -1,4 +1,10 @@
 /// Javascript Code Below
+
+// Error array, that will fill
+// up with errors if a result doesn't 
+// appear when doing a form search
+var errorArr = [];
+
 var that = this;
 var where2Application = {
     searchParams: {
