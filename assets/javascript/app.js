@@ -194,6 +194,8 @@ var where2Application = {
                 console.log("Yelp API data: ");
                 var yelpBusinesses = data.businesses;
                 renderYelpData(yelpBusinesses);
+            }, function(error) {
+                
             });
         }
     }
