@@ -1,6 +1,16 @@
 html {
 	scroll-behavior: smooth;
 }
+.filler{
+    height: 500px;
+}
+.scrollHeight{
+    height: 600px;
+}
+.scrollable{
+    max-height: 600px;
+    overflow-y: auto;
+}
 .img-responsive{
     width: 100%;
     height: auto;
