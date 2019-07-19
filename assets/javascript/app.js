@@ -1,10 +1,5 @@
 /// Javascript Code Below
 
-// Error array, that will fill
-// up with errors if a result doesn't 
-// appear when doing a form search
-var errorArr = [];
-
 // If no Eventbrite results, no Yelp results, or 
 // no Zomato results
 // then show error message
@@ -141,10 +136,6 @@ var where2Application = {
                 renderZomatoGeocode(data);
             // Error callback function    
             }, function() {
-                // If no Zomato results
-                // push in error message into
-                // errorArr
-                errorArr.push('no queryZomatoGeocode results');
                 noResultsErrorMsg();
             });
         },
@@ -220,7 +211,6 @@ var where2Application = {
                 renderYelpData(yelpBusinesses);
             // Yelp API fail    
             }, function() {
-                errorArr.push('no queryYelp results');
                 noResultsErrorMsg();
             });
         }
@@ -239,10 +229,8 @@ function renderEvent(queryData) {
     //$("#gifContainer").empty();
 
     // Check if queryData length is 0, or array is empty
-    // then push in message in errorArr to 
-    // show there are no Eventbrite events
+    // then show error messages
     if(queryData.length === 0) {
-        errorArr.push('no Eventbrite results');
         noResultsErrorMsg();
     }    
     else {
