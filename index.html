@@ -22,7 +22,18 @@
             <div class="container">
                 <div class="row w-100">
                     <div class="col-12 col-md-10 offset-md-1 col-xl-12 offset-xl-0">
-                        <span class="navbar-brand  h1">WHERE2</span>
+                     <span class="navbar-brand  h1">WHERE2</span>
+                     <div id="mySidebar" class="sidebar">
+                            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                            <a href="#">Favorite Events</a>
+                            <a href="#">Favorite Restaurants</a>
+                            <a href="#">Favorite Places</a>
+                          </div>
+                          
+                          <div id="main">
+                            <button class="openbtn" onclick="openNav()">&#9776; My Favorites List</button> 
+            
+                          </div>
                     </div>
                 </div>
             </div>
@@ -200,7 +211,7 @@
     <script type="text/javascript" src="https://www.gstatic.com/firebasejs/6.2.4/firebase-app.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/firebasejs/6.2.4/firebase-database.js"></script>
     <!-- Google Places API and Key-->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTarR3wm5wZ3_zRYPszFvNUnNnoT0lUYs&libraries=places"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFRpKuar5ha4F7K-WntXWKtyntU28gWYk&libraries=places"></script>
     
     <!-- Index.html Specific Javascript-->
     <script type="text/javascript" src="assets/javascript/app.js"></script>
