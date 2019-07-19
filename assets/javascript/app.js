@@ -240,6 +240,8 @@ $('#submit').on("click", function(){
         that.where2Application.eventbriteAPI.queryEventbrite()
         that.where2Application.yelpAPI.queryYelp()
         $("#contentDetails").show()
+        document.getElementById("filler").style.height = '400px';
+
     }
 });
 function renderEvent(queryData) {
@@ -452,3 +454,21 @@ function closeNav() {
 
 
 console.log(firebaseConfig)
+
+// To top of page functionality
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
+    document.getElementById("myBtn").style.display = "block";
+  } else {
+    document.getElementById("myBtn").style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
