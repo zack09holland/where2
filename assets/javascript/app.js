@@ -5,6 +5,15 @@
 // appear when doing a form search
 var errorArr = [];
 
+// If errorArr is length of 3 
+// (no Eventbrite results, no Yelp results, no Zomato results)
+// then show error message
+function noResultsErrorMsg() {
+    if(errorArr.length === 3) {
+        $('#form-error-msgs').removeClass('d-none');
+    }
+}
+
 var that = this;
 var where2Application = {
     searchParams: {
@@ -127,6 +136,9 @@ var where2Application = {
                 renderZomatoGeocode(data);
             // Error callback function    
             }, function() {
+                // If no Zomato results
+                // push in error message into
+                // errorArr
                 errorArr.push('no queryZomatoGeocode results');
             });
         },
