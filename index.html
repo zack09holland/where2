@@ -24,22 +24,15 @@
             <div class="container">
                 <div class="row w-100">
                     <div class="col-12 col-md-10 offset-md-1 col-xl-12 offset-xl-0">
-                        <span class="navbar-brand  h1">WHERE2</span>
-                        <div id="mySidebar" class="sidebar">
-                            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                            <a href="#">Favorite Events</a>
-                            <a href="#">Favorite Restaurants</a>
-                            <a href="#">Favorite Places</a>
-                        </div>
-                        <div id="main">
+                        <div><span class="navbar-brand  h1">WHERE2</span></div>
+                        <div id="" class="">
                             <button class="openbtn" onclick="openNav()">&#9776; My Favorites List</button>
                         </div>
                         <div class="text-left">
-                            <a href="#anchor"><btn class="btn btn-info" id="login"><span>Login...</span></btn></a>
-                        <div class="text-left float-right" id="insertButton">
+                            <div class="text-left float-right" id="insertButton"></div>
+                            <div id="firebaseui-auth-container"></div>
+                            <div id="loader"></div>
                         </div>
-                        <div id="firebaseui-auth-container"></div>
-                        <div id="loader"></div>
                     </div>
                 </div>
             </div>
@@ -163,39 +156,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Card for Collection Results -->
-                            <div class="card">
-                                <!-- Card Header is also a Button to Collapse the Card -->
-                                <div class="card-header" id="headingThree">
-                                    <h2 class="mb-0">
-                                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
-                                            data-target="#collapseThree" aria-expanded="false"
-                                            aria-controls="collapseThree">
-                                            Collections
-                                        </button>
-                                    </h2>
-                                </div>
-                                <!-- This is the Collapse Content that is Hidden -->
-                                <div id="collapseThree" class="collapse scrollable" aria-labelledby="headingThree"
-                                    data-parent="#accordionExample">
-                                    <div class="card-body">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard
-                                        dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
-                                        tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
-                                        assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
-                                        wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-                                        vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic
-                                        synth nesciunt you probably haven't heard of them accusamus labore
-                                        sustainable VHS.
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">Favorite Events</a>
+        <a href="#">Favorite Restaurants</a>
+        <a href="#">Favorite Places</a>
     </div>
     <!-- Moment JS File -->
     <script type="text/javascript" src="https://momentjs.com/downloads/moment.js"></script>
