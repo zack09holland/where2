@@ -231,6 +231,7 @@ $('#submit').on("click", function(){
     that.where2Application.yelpAPI.queryYelp()
 });
 function renderEvent(queryData) {
+    $("#collapseOne").empty();
     //$("#gifContainer").empty();
 
     // Check if queryData length is 0, or array is empty
@@ -276,8 +277,7 @@ function renderEvent(queryData) {
                             "</div>"+
                         "</div>"+
                     "</div>"+
-                "</div>"
-            $('#collapseOne').empty();       
+                "</div>"       
             $("#collapseOne").append(eventCard);
         }
 
@@ -285,6 +285,8 @@ function renderEvent(queryData) {
 }
 
 function renderYelpData(queryData) {
+    $("#yelp-data-wrapper").empty();
+
     for(var i = 0; i < queryData.length; i++) {
         var yelpImg = queryData[i].image_url;
         var yelpBusinessName = queryData[i].name;
@@ -323,14 +325,15 @@ function renderYelpData(queryData) {
                     "</div>"+
                 "</div>"+
             "</div>"+
-        "</div>"   
-    $("#yelp-data-wrapper").empty();    
+        "</div>"      
     $("#yelp-data-wrapper").append(yelpCard);    
 
     }
 
 }
 function renderZomatoGeocode(queryData) {
+    $("#geocode-location-details").empty();
+
     var zomatoRestaurants = queryData.nearby_restaurants;
 
     for (var i = 0; i < zomatoRestaurants.length; i++) {
@@ -367,8 +370,7 @@ function renderZomatoGeocode(queryData) {
                     "</div>"+
                 "</div>"+
             "</div>"+
-        "</div>"  
-    $("#geocode-location-details").empty();     
+        "</div>"     
     $("#geocode-location-details").append(ZomatoGeocodeLocationCard);    
 
     
