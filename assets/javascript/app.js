@@ -241,10 +241,17 @@ var where2Application = {
                 console.log("Yelp API data: ");
                 var yelpBusinesses = data.businesses;
                 removeErrorMsgIfResults();
+                $('#restaurants-results-card').removeClass('d-none');
                 renderYelpData(yelpBusinesses);
             // Yelp API fail    
             }, function() {
-                noResultsErrorMsg();
+                yelpResults = false;
+                if(!yelpResults && !zomatoResults) {
+                    $('#restaurants-results-card').addClass('d-none');
+                }
+                if(!eventbriteResults && !yelpResults && !zomatoResults) {
+                    noResultsErrorMsg();
+                }
             });
         }
     }
