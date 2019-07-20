@@ -298,6 +298,7 @@ function renderEvent(queryData) {
             var eventDate = queryData[i].start.local;
             var eventName = queryData[i].name.text;
             var eventImg = queryData[i].logo.url;
+            if(!eventImg){eventImg = "assets/images/defaultEvent.jpg"}
             var eventURL = queryData[i].url;
     
             var eventCard =
@@ -337,6 +338,8 @@ function renderYelpData(queryData) {
 
     for(var i = 0; i < queryData.length; i++) {
         var yelpImg = queryData[i].image_url;
+
+        if(!yelpImg){yelpImg = "assets/images/defaultFood.jpg"}
         var yelpBusinessName = queryData[i].name;
         var yelpAddress = queryData[i].location.address1 + ' ' + queryData[i].location.address2 + ' ' + queryData[i].location.address3;
         var yelpCityStateCountryZip = queryData[i].location.city + ', ' + queryData[i].location.state + ', ' + queryData[i].location.country + ', ' + queryData[i].location.zip_code;
@@ -388,6 +391,7 @@ function renderZomatoGeocode(queryData) {
 
         var name = zomatoRestaurants[i].restaurant.name;
         var imageUrl = zomatoRestaurants[i].restaurant.featured_image; 
+        if(!imageUrl){imageUrl = "assets/images/defaultFood.jpg"}
         var address = zomatoRestaurants[i].restaurant.location.address;
         var cuisines = 'Cuisines: ' + zomatoRestaurants[i].restaurant.cuisines;
         var rating = 'Rating: ' +zomatoRestaurants[i].restaurant.user_rating.aggregate_rating;
