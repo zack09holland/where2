@@ -286,13 +286,14 @@ function renderEvent(queryData) {
                                     "</div>"+
                                 "</div>"+
                                 "<div class='card-footer'>"+
-                                    "<small class='text-muted'>Last updated 3 mins ago</small>"
+                                    "<small class='text-muted id='favoriteHeart'>Favorite it!</small> "
                                 "</div>"+
                             "</div>"+
                         "</div>"+
                     "</div>"+
                 "</div>"       
             $("#collapseOne").append(eventCard);
+            
         }
 
     }
