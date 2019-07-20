@@ -1,9 +1,6 @@
+var database = firebase.database()
 /// Javascript Code Below
 
-// Event and restaurant results
-var eventbriteResults = true;
-var yelpResults = true;
-var zomatoResults = true;
 
 // If no Eventbrite results, no Yelp results, and  
 // no Zomato results
@@ -46,6 +43,16 @@ var where2Application = {
         lng : 0,
         verified : false,
     },
+    userDetails: {
+        displayName : "",
+        email : "",
+        emailverified : "",
+        photoURL : "",
+        isAnonymous : "",
+        uid : "",
+        providerData : "",
+        isAuthenticated : false
+    },
     setDateValues: function(){
         var startDate = new Date();
         var dd = startDate.getDate();
@@ -68,6 +75,11 @@ var where2Application = {
         if(mm<10){ mm='0'+mm; }
         $("#end").attr("value",yyyy+ "-" + mm +"-" +dd)
         $("#end").attr("max",(yyyy + 1) + "-" + mm +"-" +dd)
+    },
+    searchResults: {
+        eventbriteResults : true,
+        yelpResults : true,
+        zomatoResults : true
     },
     // Zomato API
     zomatoApis : {
@@ -128,8 +140,6 @@ var where2Application = {
                 url: queryUrl,
                 method: "get"
             }).then(function(data){
-                console.log("zomatoCollections: ")
-                console.log(data)
             });
         },
         queryZomatoGeocode : function () {
@@ -144,8 +154,6 @@ var where2Application = {
                 method: "get"
             // Success callback function    
             }).then(function(data){
-                console.log("zomatoGeocode: ")
-                console.log(data.nearby_restaurants);
                 removeErrorMsgIfResults();
                 renderZomatoGeocode(data);
                 $('#restaurants-results-card').removeClass('d-none');
@@ -155,7 +163,7 @@ var where2Application = {
                 if(!yelpResults && !zomatoResults) {
                     $('#restaurants-results-card').addClass('d-none');
                 }
-                if(!eventbriteResults && !yelpResults && !zomatoResults) {
+                if(!that.where2Application.searchResults.eventbriteResults && !that.where2Application.searchResults.yelpResults && !that.where2Application.searchResults.zomatoResults) {
                     noResultsErrorMsg();
                 }
             });
@@ -171,8 +179,6 @@ var where2Application = {
                 url: queryUrl,
                 method: "get"
             }).then(function(data){
-                console.log("zomatoLocationDetails")
-                console.log(data)
             });
         }
     },
@@ -197,7 +203,7 @@ var where2Application = {
         queryEventbrite : function() {
             if(this.searchResults.previousResult)
             {
-              console.log("EventContentExist")
+              //console.log("EventContentExist")
             }
             var queryURL = this.searchParams.url + 
                         "/?q=" + "&location.address="+that.where2Application.searchParams.destination +
@@ -205,7 +211,6 @@ var where2Application = {
                         "&start_date.range_start="+ moment(that.where2Application.searchParams.start).format('YYYY-MM-DD')+"T00:00:01Z"+
                         "&start_date.range_end="+moment(that.where2Application.searchParams.end).format('YYYY-MM-DD')+"T00:00:01Z"+
                         "&page="+(this.searchResults.pageNumber + 1)
-            console.log(queryURL)
             $.ajax({
                 headers: {
                     "Authorization": "Bearer 66AKEOSDCRZBQ2RSCGXN",
@@ -218,6 +223,7 @@ var where2Application = {
                 that.where2Application.eventbriteAPI.searchResults.perPage = data.pagination["page_size"]
                 that.where2Application.eventbriteAPI.searchResults.pageNumber = data.pagination["page_number"]
                 that.where2Application.eventbriteAPI.searchResults.pageCount = data.pagination["page_count"]
+                //printResultCard(data.events)
                 renderEvent(data.events)               
             });
         }
@@ -238,7 +244,6 @@ var where2Application = {
                 method: "get"
             // Yelp API success    
             }).then(function(data){
-                console.log("Yelp API data: ");
                 var yelpBusinesses = data.businesses;
                 removeErrorMsgIfResults();
                 $('#restaurants-results-card').removeClass('d-none');
@@ -249,14 +254,104 @@ var where2Application = {
                 if(!yelpResults && !zomatoResults) {
                     $('#restaurants-results-card').addClass('d-none');
                 }
-                if(!eventbriteResults && !yelpResults && !zomatoResults) {
+                if(!that.where2Application.searchResults.eventbriteResults && !that.where2Application.searchResults.yelpResults && !that.where2Application.searchResults.zomatoResults) {
                     noResultsErrorMsg();
                 }
             });
         }
+    },
+    printResultCard: function(location,cardImage,cardLineOne,cardLineTwo,cardLineThree,cardLineFour,cardLineFive,cardLineSix,externalLink,externalLinkName){
+        var divContainerFluid = $("<div>")
+        divContainerFluid.attr("class","container-fluid")
+        var divContainerRow = $("<div>")
+        divContainerRow.attr("class","row")
+        var divContainerCol = $("<div>")
+        divContainerCol.attr("class","col-12 mt-3")
+        var divContainerCard = $("<div>")
+        divContainerCard.attr("class","card shadow-lg")
+        var divContainerCardRow = $("<div>")
+        divContainerCardRow.attr("class","row m-0")
+        var divContainerCardRowImgCol = $("<div>")
+        divContainerCardRowImgCol.attr("class","col-6 col-md-4 m-auto")
+        var divContainerCardRowActualImg = $("<img>")
+        divContainerCardRowActualImg.attr("class","img-responsive m-auto")
+        divContainerCardRowActualImg.attr("src",cardImage)
+        var divContainerCardRowBodyCol = $("<div>")
+        divContainerCardRowBodyCol.attr("class","col-6 col-md-8")
+        var divContainerCardRowActualBody = $("<div>")
+        divContainerCardRowActualBody.attr("class","card-body")
+        var divContainerCardFooter = $("<div>")
+        divContainerCardFooter.attr("class","card-footer")
+        var divContainerCardFooterSpanOne = $("<span>")
+        var divContainerCardFooterSpanTwo = $("<span>")
+        divContainerCardFooterSpanTwo.attr("class","float-right")
+        var divContainerCardFooterHeart = $("<i>")
+        divContainerCardFooterHeart.attr("class","fas fa-heart")
+        if(cardLineOne){
+            var cardBodyLineOne = $("<p>")
+            cardBodyLineOne.attr("class","card-text card-line")
+            var cardBodyLineOneStrong = $("<strong>")
+            cardBodyLineOneStrong.text(cardLineOne)
+            cardBodyLineOne.append(cardBodyLineOneStrong)
+            divContainerCardRowActualBody.append(cardBodyLineOne)
+        }
+        if(cardLineTwo){
+            var cardBodyLineTwo = $("<p>")
+            cardBodyLineTwo.attr("class","card-text card-line")
+            var cardBodyLineTwoSmall = $("<small>")
+            cardBodyLineTwoSmall.text(cardLineTwo)
+            cardBodyLineTwo.append(cardBodyLineTwoSmall)
+            divContainerCardRowActualBody.append(cardBodyLineTwo)
+        }
+        if(cardLineThree){
+            var cardBodyLineThree = $("<p>")
+            cardBodyLineThree.attr("class","card-text card-line")
+            cardBodyLineThree.text(cardLineThree)
+            divContainerCardRowActualBody.append(cardBodyLineThree)
+        }
+        if(cardLineFour){
+            var cardBodyLineFour = $("<p>")
+            cardBodyLineFour.attr("class","card-text card-line")
+            cardBodyLineFour.text(cardLineFour)
+            divContainerCardRowActualBody.append(cardBodyLineFour)
+        }
+        if(cardLineFive){
+            var cardBodyLineFive = $("<p>")
+            cardBodyLineFive.attr("class","card-text card-line")
+            cardBodyLineFive.text(cardLineFive)
+            divContainerCardRowActualBody.append(cardBodyLineFive)
+        }
+        if(cardLineSix){
+            var cardBodyLineSix = $("<p>")
+            cardBodyLineSix.attr("class","card-text card-line")
+            cardBodyLineSix.text(cardLineSix)
+            divContainerCardRowActualBody.append(cardBodyLineSix)
+        }
+        if(externalLink){
+            var cardBodyExtURL = $("<a>")
+            cardBodyExtURL.attr("class","card-text card-line")
+            cardBodyExtURL.attr("href",externalLink)
+            cardBodyExtURL.attr("target","_blank")
+            cardBodyExtURL.text(externalLinkName)
+            divContainerCardFooterSpanOne.append(cardBodyExtURL)
+            
+        }
+        divContainerCardFooterSpanTwo.append(divContainerCardFooterHeart)
+        divContainerCardRowBodyCol.append(divContainerCardRowActualBody)
+        divContainerCardRowImgCol.append(divContainerCardRowActualImg)
+        divContainerCardRow.append(divContainerCardRowImgCol)
+        divContainerCardRow.append(divContainerCardRowBodyCol)
+        divContainerCard.append(divContainerCardRow)
+        divContainerCardFooter.append(divContainerCardFooterSpanOne)
+        divContainerCardFooter.append(divContainerCardFooterSpanTwo)
+        divContainerCard.append(divContainerCardFooter)
+        divContainerCol.append(divContainerCard)
+        divContainerRow.append(divContainerCol)
+        divContainerFluid.append(divContainerRow)
+        $("#"+location).append(divContainerFluid);
     }
 };
-$('#submit').on("click", function(){
+$('#Search').on("click", function(){
     if(that.where2Application.searchParams.valid){
         that.where2Application.searchParams.start = $('#start').val().trim(),
         that.where2Application.searchParams.end = $('#end').val().trim(),
@@ -277,11 +372,9 @@ function renderEvent(queryData) {
     // Check if queryData length is 0, or array is empty
     // then show error messages
     if(queryData.length === 0) {
-        eventbriteResults = false;
+        that.where2Application.searchResults.eventbriteResults = false;
          $('#event-results-card').addClass('hide');
-
-         if(!eventbriteResults && !yelpResults && !zomatoResults) {
-            
+         if(!that.where2Application.searchResults.eventbriteResults && !that.where2Application.searchResults.yelpResults && !that.where2Application.searchResults.zomatoResults) {
             noResultsErrorMsg();
         }
     }    
@@ -294,40 +387,12 @@ function renderEvent(queryData) {
             }else{
                 var eventAddress = queryData[i].venue.address.address_1+", "+queryData[i].venue.address.localized_area_display;
             }
-            
             var eventDate = queryData[i].start.local;
             var eventName = queryData[i].name.text;
             var eventImg = queryData[i].logo.url;
             if(!eventImg){eventImg = "assets/images/defaultEvent.jpg"}
             var eventURL = queryData[i].url;
-    
-            var eventCard =
-                "<div class='container-fluid'>"+
-                    "<div class='row'>"+
-                        "<div class='col-12 mt-3'>"+
-                            "<div class='card shadow-lg'>"+
-                                "<div class='row m-0'>"+
-                                    "<div class='col-6 col-md-4 m-auto'>"+
-                                        "<img class='img-responsive m-auto' src= " + eventImg + " alt='Card image cap'>"+
-                                    "</div>"+
-                                    "<div class='col-6 col-md-8'>"+
-                                        "<div class='card-body'>"+
-                                            "<p class='card-text card-line'>"+"<strong>"+eventName+"</strong></p>"+
-                                            "<p class='card-text card-line'>"+"<small>"+eventAddress+"</small></p>"+
-                                            "<p class='card-text card-line'>"+moment(eventDate).format("LLL")+"</p>"+
-                                            "<a class='card-text card-line' href="+eventURL+" target='_blank'>Tickets</a>"+
-                                        "</div>"+
-                                    "</div>"+
-                                "</div>"+
-                                "<div class='card-footer'>"+
-                                    "<small class='text-muted id='favoriteHeart'>Favorite it!</small> "
-                                "</div>"+
-                            "</div>"+
-                        "</div>"+
-                    "</div>"+
-                "</div>"       
-            $("#collapseOne").append(eventCard);
-            
+            that.where2Application.printResultCard("collapseOne",eventImg,eventName,eventAddress,eventDate,null,null,null,eventURL,"Results from EventBrite")           
         }
         $("#errorNoScroll").attr("href","")
     }
@@ -335,60 +400,26 @@ function renderEvent(queryData) {
 
 function renderYelpData(queryData) {
     $("#yelp-data-wrapper").empty();
-
     for(var i = 0; i < queryData.length; i++) {
         var yelpImg = queryData[i].image_url;
-
         if(!yelpImg){yelpImg = "assets/images/defaultFood.jpg"}
         var yelpBusinessName = queryData[i].name;
         var yelpAddress = queryData[i].location.address1 + ' ' + queryData[i].location.address2 + ' ' + queryData[i].location.address3;
         var yelpCityStateCountryZip = queryData[i].location.city + ', ' + queryData[i].location.state + ', ' + queryData[i].location.country + ', ' + queryData[i].location.zip_code;
+        var yelpCleanAddress = yelpAddress + "; " + yelpCityStateCountryZip
         var displayPhone = queryData[i].display_phone;
         var price = 'Price: ' + queryData[i].price;
         var rating = 'Rating: ' + queryData[i].rating;
         var reviewCount = 'Review Count: ' + queryData[i].review_count;
         var yelpPage = queryData[i].url;
-    
-        var yelpCard =
-        "<div class='container-fluid'>"+
-            "<div class='row'>"+
-                "<div class='col-12 mt-3'>"+
-                    "<div class='card shadow-lg'>"+
-                        "<div class='row m-0'>"+
-                            "<div class='col-6 col-md-4 m-auto'>"+
-                                "<img class='img-responsive m-auto' src= " + yelpImg + " alt='Card image cap'>"+
-                            "</div>"+
-                            "<div class='col-6 col-md-8'>"+
-                                "<div class='card-body'>"+
-                                    "<p class='card-text card-line'>"+"<strong>"+yelpBusinessName+"</strong></p>"+
-                                    "<p class='card-text card-line'>"+yelpAddress+"<br />" + yelpCityStateCountryZip + "</p>" +
-                                    "<p class='card-text card-line'>" + displayPhone + "</p>" +
-                                    "<p class='card-text card-line'>" + price + "</p>" +
-                                    "<p class='card-text card-line'>" + rating + "</p>" +
-                                    "<p class='card-text card-line'>" + reviewCount + "</p>" +
-                                    "<a class='card-text card-line' href="+yelpPage+" target='_blank'>Yelp Page</a>"+
-                                "</div>"+
-                            "</div>"+
-                        "</div>"+
-                        "<div class='card-footer'>"+
-                            "<small class='text-muted'>Last updated 3 mins ago</small>"
-                        "</div>"+
-                    "</div>"+
-                "</div>"+
-            "</div>"+
-        "</div>"      
-    $("#yelp-data-wrapper").append(yelpCard);    
-
+        that.where2Application.printResultCard("yelp-data-wrapper",yelpImg,yelpBusinessName,yelpCleanAddress,displayPhone,price,rating,reviewCount,yelpPage,"Results from Yelp")
     }
 
 }
 function renderZomatoGeocode(queryData) {
     $("#geocode-location-details").empty();
-
     var zomatoRestaurants = queryData.nearby_restaurants;
-
     for (var i = 0; i < zomatoRestaurants.length; i++) {
-
         var name = zomatoRestaurants[i].restaurant.name;
         var imageUrl = zomatoRestaurants[i].restaurant.featured_image; 
         if(!imageUrl){imageUrl = "assets/images/defaultFood.jpg"}
@@ -396,40 +427,7 @@ function renderZomatoGeocode(queryData) {
         var cuisines = 'Cuisines: ' + zomatoRestaurants[i].restaurant.cuisines;
         var rating = 'Rating: ' +zomatoRestaurants[i].restaurant.user_rating.aggregate_rating;
         var restaurantLink = zomatoRestaurants[i].restaurant.url;
-
-        var ZomatoGeocodeLocationCard =
-        "<div class='container-fluid'>"+
-            "<div class='row'>"+
-                "<div class='col-12 mt-3'>"+
-                    "<div class='card shadow-lg'>"+
-                        "<div class='row m-0'>"+
-                            "<div class='col-6 col-md-4 m-auto'>"+
-                                "<img class='img-responsive m-auto' src='" + imageUrl + "' alt='" + name.replace(/[^a-zA-Z0-9]/g, "") + "'>"+
-                            "</div>"+
-                            "<div class='col-6 col-md-8'>"+
-                                "<div class='card-body'>"+
-                                    "<p class='card-text card-line'>"+"<strong>"+name+"</strong></p>"+
-                                    "<p class='card-text card-line'>"+address+"</p>" +
-                                    "<p class='card-text card-line'>" + cuisines + "</p>" +
-                                    "<p class='card-text card-line'>" + rating + "</p>" +
-                                    "<a class='card-text card-line' href="+restaurantLink+" target='_blank'>Zomato Page</a>"+
-                                "</div>"+
-                            "</div>"+
-                        "</div>"+
-                        "<div class='card-footer'>"+
-                            "<small class='text-muted'>Last updated 3 mins ago</small>"
-                        "</div>"+
-                    "</div>"+
-                "</div>"+
-            "</div>"+
-        "</div>"     
-    $("#geocode-location-details").append(ZomatoGeocodeLocationCard);    
-
-    
-
-
-        
-
+        that.where2Application.printResultCard("geocode-location-details",imageUrl,name,address,cuisines,rating,null,null,restaurantLink,"Results from Zomato")
     }
 }
 //      Location Auto Complete Code
@@ -437,7 +435,6 @@ var input = document.getElementById('locationAutocomplete');
 var autocomplete = new google.maps.places.Autocomplete(input,{types: ['(cities)']});
 google.maps.event.addListener(autocomplete, 'place_changed', function(){
    var place = autocomplete.getPlace()
-   console.log(place)
    if(place["place_id"]){
         that.where2Application.searchParams.valid = true;
         that.where2Application.searchParams.destination = place["formatted_address"]
@@ -452,7 +449,6 @@ google.maps.event.addListener(autocomplete, 'place_changed', function(){
             }
         that.where2Application.searchParams.lat = Number.parseFloat(place.geometry.location.lat()).toFixed(4)
         that.where2Application.searchParams.lng = Number.parseFloat(place.geometry.location.lng()).toFixed(4)
-        console.log("Location: " + that.where2Application.searchParams.destination + "\n Lat: " + that.where2Application.searchParams.lat + "\n Lng: " + that.where2Application.searchParams.lng)
    } else {
     that.where2Application.searchParams.valid = false;
    }
@@ -460,21 +456,23 @@ google.maps.event.addListener(autocomplete, 'place_changed', function(){
 })
 
 $(document).on("click", "#login", function(){
-    // The start method will wait until the DOM is loaded.
     ui.start('#firebaseui-auth-container', uiConfig);
 });
 
 $(document).on("click", "#signOut", function(){
-    // The start method will wait until the DOM is loaded.
     firebase.auth().signOut().then(function() {
-        console.log('Signed Out');
       }, function(error) {
         console.error('Sign Out Error', error);
       });
 });
 
 
+$(document).on("click", ".fa-heart", function(){   
+    //console.log(this)
+});
+
 $(function(){
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
     $("#contentDetails").hide()
     that.where2Application.setDateValues();
 });
@@ -489,10 +487,6 @@ function closeNav() {
     document.getElementById("mySidebar").style.width = "0";
     document.getElementById("main").style.marginLeft = "0";
 }
-
-
-console.log(firebaseConfig)
-
 // To top of page functionality
 // When the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function() {scrollFunction()};
@@ -540,33 +534,74 @@ var uiConfig = {
   };
 
 // Used to set Auth to Local Storage so Persistent on machine
-firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+
 
 //function Monitors for Auth Change via FirebaseAUth
 firebase.auth().onAuthStateChanged(function(user) {
-  $("#insertButton").empty()
-  var mainButtonCode = $("<btn>")
-  mainButtonCode.attr("class","btn btn-secondary")
-  var buttonMsg = $("<span>")
-  if (user) {
-    // User is signed in.
-    var displayName = user.displayName;
-    var email = user.email;
-    var emailVerified = user.emailVerified;
-    var photoURL = user.photoURL;
-    var isAnonymous = user.isAnonymous;
-    var uid = user.uid;
-    var providerData = user.providerData;
-    $("#firebaseAuthModal").modal('hide')
-    mainButtonCode.attr("id","signOut")
-    buttonMsg.text("Sign Out...")
-    // ...
-  } else {
-    mainButtonCode.attr("id","login")
-    mainButtonCode.attr("data-toggle","modal")
-    mainButtonCode.attr("data-target","#firebaseAuthModal")
-    buttonMsg.text("Login...")
+    $("#insertButton").empty()
+    var mainButtonCode = $("<btn>")
+    mainButtonCode.attr("class","btn btn-secondary")
+    var buttonMsg = $("<span>")
+    if (user) {
+      // User is signed in.
+      // User info if we need it
+      that.where2Application.userDetails = {
+          displayName : user.displayName,
+          email : user.email,
+          emailverified : user.emailVerified,
+          photoURL : user.photoURL,
+          isAnonymous : user.isAnonymous,
+          uid : user.uid,
+          providerData : user.providerData,
+          isAuthenticated : true
+      }
+      addUsertoDatabase(that.where2Application.userDetails.uid)
+      $("#firebaseAuthModal").modal('hide')
+      mainButtonCode.attr("id","signOut")
+      buttonMsg.text("Sign Out...")
+      // ...
+  
+    } else {
+      that.where2Application.userDetails = {
+          displayName : "",
+          email : "",
+          emailverified : "",
+          photoURL : "",
+          isAnonymous : "",
+          uid : "",
+          providerData : "",
+          isAuthenticated : false
+      }
+      mainButtonCode.attr("id","login")
+      mainButtonCode.attr("data-toggle","modal")
+      mainButtonCode.attr("data-target","#firebaseAuthModal")
+      buttonMsg.text("Login...")
+    }
+    mainButtonCode.append(buttonMsg)
+    $("#insertButton").append(mainButtonCode)
+  });
+  
+  
+  
+    
+  function addUsertoDatabase(userId,name,email){
+      firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
+        var username = (snapshot.val() && snapshot.val().username)
+        //If user is not in DB we add them.
+        if(!username){
+            firebase.database().ref('users/' + userId).set({
+                username: that.where2Application.userDetails.displayName,
+                email: that.where2Application.userDetails.email
+            });
+        } else {
+        }
+      });
   }
-  mainButtonCode.append(buttonMsg)
-  $("#insertButton").append(mainButtonCode)
-});
+  
+  function writeUserData(userId, name, email) {
+      firebase.database().ref('users/' + userId).set({
+        username: name,
+        email: email
+      });
+    }
+  
