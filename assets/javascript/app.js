@@ -1,9 +1,6 @@
+var database = firebase.database()
 /// Javascript Code Below
 
-// Event and restaurant results
-var eventbriteResults = true;
-var yelpResults = true;
-var zomatoResults = true;
 
 // If no Eventbrite results, no Yelp results, and  
 // no Zomato results
@@ -68,6 +65,11 @@ var where2Application = {
         if(mm<10){ mm='0'+mm; }
         $("#end").attr("value",yyyy+ "-" + mm +"-" +dd)
         $("#end").attr("max",(yyyy + 1) + "-" + mm +"-" +dd)
+    },
+    searchResults: {
+        eventbriteResults : true,
+        yelpResults : true,
+        zomatoResults : true
     },
     // Zomato API
     zomatoApis : {
@@ -155,7 +157,7 @@ var where2Application = {
                 if(!yelpResults && !zomatoResults) {
                     $('#restaurants-results-card').addClass('d-none');
                 }
-                if(!eventbriteResults && !yelpResults && !zomatoResults) {
+                if(!that.where2Application.searchResults.eventbriteResults && !that.where2Application.searchResults.yelpResults && !that.where2Application.searchResults.zomatoResults) {
                     noResultsErrorMsg();
                 }
             });
@@ -249,7 +251,7 @@ var where2Application = {
                 if(!yelpResults && !zomatoResults) {
                     $('#restaurants-results-card').addClass('d-none');
                 }
-                if(!eventbriteResults && !yelpResults && !zomatoResults) {
+                if(!that.where2Application.searchResults.eventbriteResults && !that.where2Application.searchResults.yelpResults && !that.where2Application.searchResults.zomatoResults) {
                     noResultsErrorMsg();
                 }
             });
@@ -270,6 +272,7 @@ $('#submit').on("click", function(){
 
     }
 });
+
 function renderEvent(queryData) {
     $("#collapseOne").empty();
     //$("#gifContainer").empty();
@@ -277,10 +280,10 @@ function renderEvent(queryData) {
     // Check if queryData length is 0, or array is empty
     // then show error messages
     if(queryData.length === 0) {
-        eventbriteResults = false;
+        that.where2Application.searchResults.eventbriteResults = false;
          $('#event-results-card').addClass('hide');
 
-         if(!eventbriteResults && !yelpResults && !zomatoResults) {
+         if(!that.where2Application.searchResults.eventbriteResults && !that.where2Application.searchResults.yelpResults && !that.where2Application.searchResults.zomatoResults) {
             
             noResultsErrorMsg();
         }
@@ -475,6 +478,7 @@ $(document).on("click", "#signOut", function(){
 
 
 $(function(){
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
     $("#contentDetails").hide()
     that.where2Application.setDateValues();
 });
@@ -540,33 +544,65 @@ var uiConfig = {
   };
 
 // Used to set Auth to Local Storage so Persistent on machine
-firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+
 
 //function Monitors for Auth Change via FirebaseAUth
 firebase.auth().onAuthStateChanged(function(user) {
-  $("#insertButton").empty()
-  var mainButtonCode = $("<btn>")
-  mainButtonCode.attr("class","btn btn-secondary")
-  var buttonMsg = $("<span>")
-  if (user) {
-    // User is signed in.
-    var displayName = user.displayName;
-    var email = user.email;
-    var emailVerified = user.emailVerified;
-    var photoURL = user.photoURL;
-    var isAnonymous = user.isAnonymous;
-    var uid = user.uid;
-    var providerData = user.providerData;
-    $("#firebaseAuthModal").modal('hide')
-    mainButtonCode.attr("id","signOut")
-    buttonMsg.text("Sign Out...")
-    // ...
-  } else {
-    mainButtonCode.attr("id","login")
-    mainButtonCode.attr("data-toggle","modal")
-    mainButtonCode.attr("data-target","#firebaseAuthModal")
-    buttonMsg.text("Login...")
+    $("#insertButton").empty()
+    var mainButtonCode = $("<btn>")
+    mainButtonCode.attr("class","btn btn-secondary")
+    var buttonMsg = $("<span>")
+    if (user) {
+      // User is signed in.
+      // User info if we need it
+      that.where2Application.userDetails = {
+          displayName : user.displayName,
+          email : user.email,
+          emailverified : user.emailVerified,
+          photoURL : user.photoURL,
+          isAnonymous : user.isAnonymous,
+          uid : user.uid,
+          providerData : user.providerData,
+          isAuthenticated : true
+      }
+      addUsertoDatabase(that.where2Application.userDetails.uid)
+      console.log(that.where2Application.userDetails)
+      $("#firebaseAuthModal").modal('hide')
+      mainButtonCode.attr("id","signOut")
+      buttonMsg.text("Sign Out...")
+      // ...
+  
+    } else {
+      that.where2Application.userDetails = {
+          displayName : "",
+          email : "",
+          emailverified : "",
+          photoURL : "",
+          isAnonymous : "",
+          uid : "",
+          providerData : "",
+          isAuthenticated : false
+      }
+      mainButtonCode.attr("id","login")
+      mainButtonCode.attr("data-toggle","modal")
+      mainButtonCode.attr("data-target","#firebaseAuthModal")
+      buttonMsg.text("Login...")
+    }
+    mainButtonCode.append(buttonMsg)
+    $("#insertButton").append(mainButtonCode)
+  });
+  
+  
+  
+    
+  function addUsertoDatabase(userId,name,email){
+      console.log(firebase.database().ref('/users/' + userId).once('value'));
   }
-  mainButtonCode.append(buttonMsg)
-  $("#insertButton").append(mainButtonCode)
-});
+  
+  function writeUserData(userId, name, email) {
+      firebase.database().ref('users/' + userId).set({
+        username: name,
+        email: email
+      });
+    }
+  
