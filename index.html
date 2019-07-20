@@ -18,6 +18,8 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Actor|Lobster|Permanent+Marker|Ubuntu&display=swap"
         rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -27,7 +29,8 @@
             <div class="col-md-10 offset-md-1 col-xl-12 offset-xl-0">
                 <!-- First Card for Travel Details -->
                 <div class="card">
-                    <h5 class="card-header text-center shadow-md logoFont">WHERE<span style="font-size: 25px">2</span></h5>
+                    <h5 class="card-header text-center shadow-md logoFont">WHERE<span style="font-size: 25px">2</span>
+                    </h5>
                     <div class="card-body">
                         <!-- Single Row for all the Search COLUMNS Dynamic to Screen Size -->
                         <div class="row">
@@ -73,7 +76,7 @@
                         <!-- Search Button for Travel Details-->
                         <div class="row">
                             <div class="col-6 text-left">
-                                <a href="#anchor">
+                                <a id="errorNoScroll"href="#anchor">
                                     <btn class="btn btn-primary" id="submit"><span>Search...</span></btn>
                                 </a>
                                 <h6 class="mt-3 d-none text-danger" id="form-error-msgs">There are no results. Please
@@ -89,13 +92,25 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="images/COACHELLA2017-WP176-1920x537.jpg" class="d-block w-100" alt="...">
+                <img src="assets/images/COACHELLA2017-WP176-1920x537.jpg" class="d-block w-100" alt="...">
             </div>
             <div class="carousel-item">
-                <img src="images/banner2.jpg" class="d-block w-100" alt="...">
+                <img src="assets/images/banner2.jpg" class="d-block w-100" alt="...">
             </div>
             <div class="carousel-item">
-                <img src="images/banner3.jpg" class="d-block w-100" alt="...">
+                <img src="assets/images/banner3.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="assets/images/16180627890_fc94e87002_o.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="assets/images/487479607_c383e2f1ca_o.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="assets/images/7219659586_3df661e7a6_o.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="assets/images/venice.jpg" class="d-block w-100" alt="...">
             </div>
         </div>
     </div>
@@ -147,14 +162,17 @@
                             </div>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
     </div>
+    </div>
     <!-- Button trigger modal -->
-    
-      
-      <!-- Modal -->
-    <div class="modal fade" id="firebaseAuthModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="firebaseAuthModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
@@ -201,7 +219,8 @@
 
     <!-- Google Places API and Key-->
     <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFRpKuar5ha4F7K-WntXWKtyntU28gWYk&libraries=places"></script> -->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBNdi34Pxo6fZ_1MTSIC4uRsLmG5i4NQhY&libraries=places"></script>
+    <script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBNdi34Pxo6fZ_1MTSIC4uRsLmG5i4NQhY&libraries=places"></script>
 
     <!-- local FireBase initscript-->
     <script type="text/javascript" src="assets/javascript/init-firebase.js"></script>

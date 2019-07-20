@@ -278,10 +278,10 @@ function renderEvent(queryData) {
     // then show error messages
     if(queryData.length === 0) {
         eventbriteResults = false;
-
          $('#event-results-card').addClass('hide');
 
          if(!eventbriteResults && !yelpResults && !zomatoResults) {
+            
             noResultsErrorMsg();
         }
     }    
@@ -319,15 +319,16 @@ function renderEvent(queryData) {
                                     "</div>"+
                                 "</div>"+
                                 "<div class='card-footer'>"+
-                                    "<small class='text-muted'>Last updated 3 mins ago</small>"
+                                    "<small class='text-muted id='favoriteHeart'>Favorite it!</small> "
                                 "</div>"+
                             "</div>"+
                         "</div>"+
                     "</div>"+
                 "</div>"       
             $("#collapseOne").append(eventCard);
+            
         }
-
+        $("#errorNoScroll").attr("href","")
     }
 }
 
