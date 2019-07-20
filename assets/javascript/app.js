@@ -353,7 +353,20 @@ function renderZomatoGeocode(queryData) {
     for (var i = 0; i < zomatoRestaurants.length; i++) {
 
         var name = zomatoRestaurants[i].restaurant.name;
-        var imageUrl = zomatoRestaurants[i].restaurant.featured_image; 
+
+        // Get default image if URL is empty
+        if(zomatoRestaurants[i].restaurant.featured_image === '') {
+            var imageUrl = '/images/close-up-dinner-fish.png'
+        }
+        // Else show Zomato image
+        else {
+            var imageUrl = zomatoRestaurants[i].restaurant.featured_image; 
+        }
+
+        console.log('window.location.hostname: ' + window.location.hostname);
+
+        console.log(imageUrl);
+        
         var address = zomatoRestaurants[i].restaurant.location.address;
         var cuisines = 'Cuisines: ' + zomatoRestaurants[i].restaurant.cuisines;
         var rating = 'Rating: ' +zomatoRestaurants[i].restaurant.user_rating.aggregate_rating;
