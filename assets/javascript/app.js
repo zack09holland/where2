@@ -267,7 +267,6 @@ $('#submit').on("click", function(){
         that.where2Application.yelpAPI.queryYelp()
         $("#contentDetails").show()
         document.getElementById("filler").style.height = '650px';
-
     }
 });
 function renderEvent(queryData) {
@@ -281,7 +280,7 @@ function renderEvent(queryData) {
          $('#event-results-card').addClass('hide');
 
          if(!eventbriteResults && !yelpResults && !zomatoResults) {
-            
+            console.log('blah');
             noResultsErrorMsg();
         }
     }    
@@ -329,7 +328,7 @@ function renderEvent(queryData) {
             $("#collapseOne").append(eventCard);
             
         }
-        $("#errorNoScroll").attr("href","")
+        //$("#errorNoScroll").attr("href","")
     }
 }
 
