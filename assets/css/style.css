@@ -27,7 +27,7 @@ html {
     position: relative;
 }
 .carousel-item{
-    height: 537px;
+    height: 960px;
     width: 100%;
 }
 .carousel-inner .carousel-item {
@@ -134,4 +134,21 @@ div.form-group{
   
   #myBtn:hover {
     background-color: #555;
+  }
+
+  /* Fonts */
+  .logoFont{
+    font-family: 'Actor', sans-serif;
+    font-size: 40px;
+  }
+  .travelFont{
+    font-family: 'Permanent Marker', cursive;
+      font-size: 40px;
+  }
+  .cardFont{
+    /* font-family: 'Ubuntu', sans-serif; */
+    font-family: 'Lobster', cursive;
+    /* font-family: 'Permanent Marker', cursive; */
+    /* font-family: 'Actor', sans-serif; */
+    font-size: 40px;
   }
