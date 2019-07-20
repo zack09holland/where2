@@ -277,9 +277,16 @@ function renderEvent(queryData) {
     // Check if queryData length is 0, or array is empty
     // then show error messages
     if(queryData.length === 0) {
-        noResultsErrorMsg();
+        eventbriteResults = false;
+
+         $('#event-results-card').addClass('hide');
+
+         if(!eventbriteResults && !yelpResults && !zomatoResults) {
+            noResultsErrorMsg();
+        }
     }    
     else {
+        $('#event-results-card').removeClass('hide');
         removeErrorMsgIfResults();
         for (var i = 0; i < queryData.length; i++) {
             if(queryData[i].venue.address.address_1 === null){
