@@ -278,10 +278,10 @@ function renderEvent(queryData) {
     // then show error messages
     if(queryData.length === 0) {
         eventbriteResults = false;
-
          $('#event-results-card').addClass('hide');
 
          if(!eventbriteResults && !yelpResults && !zomatoResults) {
+            
             noResultsErrorMsg();
         }
     }    
@@ -328,7 +328,7 @@ function renderEvent(queryData) {
             $("#collapseOne").append(eventCard);
             
         }
-
+        $("#errorNoScroll").attr("href","")
     }
 }
 
