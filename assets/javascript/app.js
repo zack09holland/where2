@@ -10,12 +10,18 @@ function noResultsErrorMsg() {
     $('#collapseOne').empty();
     $('#yelp-data-wrapper').empty();
     $('#geocode-location-details').empty();
+    // Hide #contentDetails which
+    // shows events/restaurants DIV
+    $('#contentDetails').addClass('d-none');
 }
 
 // If APIs do show results (Eventbrite, Yelp, Zomato)
 // then remove form error message
 function removeErrorMsgIfResults() {
     $('#form-error-msgs').addClass('d-none');
+    // Show #contentDetails which
+    // shows events/restaurants DIV
+    $('#contentDetails').removeClass('d-none');
 }
 
 var that = this;
