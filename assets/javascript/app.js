@@ -1,31 +1,20 @@
 var database = firebase.database()
 /// Javascript Code Below
 
-
-// If no Eventbrite results, no Yelp results, and  
-// no Zomato results
-// then show error message
-// and hide accordion
-function noResultsErrorMsg() {
-    $('#form-error-msgs').removeClass('d-none')
-    $('#contentDetails').addClass('d-none');
-    // Remove data from Eventbrite, Yelp, Zomato
-    // containers if error msg
-    $('#collapseOne').empty();
-    $('#yelp-data-wrapper').empty();
-    $('#geocode-location-details').empty();
+var clockRunning = false;
+function start() {
+  if (!clockRunning) {
+    intervalId = setInterval(count, 1000);
+    clockRunning = true;
+  }
 }
-
-// If APIs do show results (Eventbrite, Yelp, Zomato)
-// then remove form error message
-function removeErrorMsgIfResults() {
-    $('#form-error-msgs').addClass('d-none');
-    // Show #contentDetails which
-    // shows events/restaurants DIV
-    $('#contentDetails').removeClass('d-none');
-    $('#event-results-card').removeClass('d-none');
-    $('#restaurants-results-card').removeClass('d-none');
+function stop() {
+  clearInterval(intervalId);
+  clockRunning = false;
 }
+function count() {
+    displayFixes();
+  }
 
 var that = this;
 var where2Application = {
@@ -77,9 +66,13 @@ var where2Application = {
         $("#end").attr("max",(yyyy + 1) + "-" + mm +"-" +dd)
     },
     searchResults: {
-        eventbriteResults : true,
-        yelpResults : true,
-        zomatoResults : true
+        eventbriteResults : false,
+        eventbriteComplete : false,
+        yelpResults : false,
+        yelpComplete : false,
+        zomatoResults : false,
+        zomatoComplete: false,
+        allResults: false
     },
     // Zomato API
     zomatoApis : {
@@ -118,7 +111,8 @@ var where2Application = {
                 url: queryUrl,
                 method: "get"
             }).then(function(data){
-                if(data["location_suggestions"].length === 1){
+                console.log(data)
+                if(data["location_suggestions"].hasTotal > 0){
                     that.where2Application.zomatoApis.searchParams["entity_id"] = data["location_suggestions"][0]["entity_id"]
                     that.where2Application.zomatoApis.searchParams["entity_type"] = data["location_suggestions"][0]["entity_type"]
                     that.where2Application.zomatoApis.searchParams["country_id"] = data["location_suggestions"][0]["country_id"]
@@ -126,6 +120,9 @@ var where2Application = {
                     that.where2Application.zomatoApis.queryZomatoCollections();
                     that.where2Application.zomatoApis.queryZomatoGeocode();
                     that.where2Application.zomatoApis.queryZomatoLocationsDetails();
+                }
+                else {
+                    that.where2Application.searchResults.zomatoComplete = true;
                 }
             });
         },
@@ -154,18 +151,14 @@ var where2Application = {
                 method: "get"
             // Success callback function    
             }).then(function(data){
-                removeErrorMsgIfResults();
+                that.where2Application.searchResults.zomatoResults = true;
+                that.where2Application.searchResults.zomatoComplete = true;
+                //removeErrorMsgIfResults();
                 renderZomatoGeocode(data);
-                $('#restaurants-results-card').removeClass('d-none');
             // Error callback function    
             }, function() {
-                zomatoResults = false;
-                if(!yelpResults && !zomatoResults) {
-                    $('#restaurants-results-card').addClass('d-none');
-                }
-                if(!that.where2Application.searchResults.eventbriteResults && !that.where2Application.searchResults.yelpResults && !that.where2Application.searchResults.zomatoResults) {
-                    noResultsErrorMsg();
-                }
+                that.where2Application.searchResults.zomatoResults = false;
+                that.where2Application.searchResults.zomatoComplete = true;
             });
         },
         queryZomatoLocationsDetails : function () {
@@ -219,12 +212,17 @@ var where2Application = {
                 method: "get"
             // Evenbrite query success  
             }).then(function(data){
+                that.where2Application.searchResults.eventbriteResults = true;
+                that.where2Application.searchResults.eventbriteComplete = true;
                 that.where2Application.eventbriteAPI.searchResults.previousResult = data
                 that.where2Application.eventbriteAPI.searchResults.perPage = data.pagination["page_size"]
                 that.where2Application.eventbriteAPI.searchResults.pageNumber = data.pagination["page_number"]
                 that.where2Application.eventbriteAPI.searchResults.pageCount = data.pagination["page_count"]
-                //printResultCard(data.events)
                 renderEvent(data.events)               
+            },
+            function(){
+                that.where2Application.searchResults.eventbriteResults = false;
+                that.where2Application.searchResults.eventbriteComplete = true;
             });
         }
         
@@ -244,19 +242,16 @@ var where2Application = {
                 method: "get"
             // Yelp API success    
             }).then(function(data){
+                that.where2Application.searchResults.yelpResults = true;
                 var yelpBusinesses = data.businesses;
-                removeErrorMsgIfResults();
+                //removeErrorMsgIfResults();
                 $('#restaurants-results-card').removeClass('d-none');
                 renderYelpData(yelpBusinesses);
+                that.where2Application.searchResults.yelpComplete = true;
             // Yelp API fail    
             }, function() {
-                yelpResults = false;
-                if(!yelpResults && !zomatoResults) {
-                    $('#restaurants-results-card').addClass('d-none');
-                }
-                if(!that.where2Application.searchResults.eventbriteResults && !that.where2Application.searchResults.yelpResults && !that.where2Application.searchResults.zomatoResults) {
-                    noResultsErrorMsg();
-                }
+                that.where2Application.searchResults.yelpResults = false;
+                that.where2Application.searchResults.yelpComplete = true;
             });
         }
     },
@@ -353,6 +348,7 @@ var where2Application = {
 };
 $('#Search').on("click", function(){
     if(that.where2Application.searchParams.valid){
+        $("#contentDetails").hide()
         that.where2Application.searchParams.start = $('#start').val().trim(),
         that.where2Application.searchParams.end = $('#end').val().trim(),
         that.where2Application.searchParams.radius = $('#radius').val().trim()
@@ -360,7 +356,7 @@ $('#Search').on("click", function(){
         that.where2Application.zomatoApis.queryZomatoCities()
         that.where2Application.eventbriteAPI.queryEventbrite()
         that.where2Application.yelpAPI.queryYelp()
-        $("#contentDetails").show()
+        displayFixes()
         document.getElementById("filler").style.height = '650px';
 
     }
@@ -373,14 +369,14 @@ function renderEvent(queryData) {
     // then show error messages
     if(queryData.length === 0) {
         that.where2Application.searchResults.eventbriteResults = false;
-         $('#event-results-card').addClass('hide');
+         //$('#event-results-card').hide();
          if(!that.where2Application.searchResults.eventbriteResults && !that.where2Application.searchResults.yelpResults && !that.where2Application.searchResults.zomatoResults) {
-            noResultsErrorMsg();
+            //noResultsErrorMsg();
         }
     }    
     else {
-        $('#event-results-card').removeClass('hide');
-        removeErrorMsgIfResults();
+        //$('#event-results-card').show();
+        //removeErrorMsgIfResults();
         for (var i = 0; i < queryData.length; i++) {
             if(queryData[i].venue.address.address_1 === null){
                 var eventAddress = queryData[i].venue.address.localized_area_display;
@@ -470,6 +466,37 @@ $(document).on("click", "#signOut", function(){
 $(document).on("click", ".fa-heart", function(){   
     //console.log(this)
 });
+
+function displayFixes(){
+    if(that.where2Application.searchResults.zomatoComplete && that.where2Application.searchResults.yelpComplete && that.where2Application.searchResults.eventbriteComplete){
+        stop()
+        if((that.where2Application.searchResults.zomatoResults && that.where2Application.searchResults.yelpResults) || (that.where2Application.searchResults.zomatoResults || that.where2Application.searchResults.yelpResults)){
+            $("#restaurants-results-card").show()
+            that.where2Application.searchResults.allResults = true;
+            
+        } else {
+            $("#restaurants-results-card").hide()
+        }
+        if(that.where2Application.searchResults.eventbriteResults){
+            $("#event-results-card").show()
+            that.where2Application.searchResults.allResults = true;
+        } else {
+            $("#event-results-card").hide()
+        }
+        if(that.where2Application.searchResults.allResults){
+            $("#contentDetails").show()
+        }
+    } else {
+        setTimeout(start(),1000)
+    }
+}
+
+function ComeONMan(){
+    if(!that.where2Application.searchResults.zomatoComplete && !that.where2Application.searchResults.yelpComplete && !that.where2Application.searchResults.eventbriteComplete){
+        setTimeout(displayFixes(),1000)
+    }
+}
+
 
 $(function(){
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
