@@ -472,3 +472,63 @@ function topFunction() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 }
+
+// Firebase UI variable being created with specific configuration
+var ui = new firebaseui.auth.AuthUI(firebase.auth());
+var uiConfig = {
+    callbacks: {
+        signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+            // User successfully signed in.
+            // Return type determines whether we continue the redirect automatically
+            // or whether we leave that to developer to handle.
+            return false;
+        },
+        uiShown: function() {
+            // The widget is rendered.
+            // Hide the loader.
+            document.getElementById('loader').style.display = 'none';
+        }
+    },
+    // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+    signInFlow: 'popup',
+    signInOptions: [
+      // Leave the lines as is for the providers you want to offer your users.
+      firebase.auth.EmailAuthProvider.PROVIDER_ID,
+    ],
+    // Terms of service url.
+    tosUrl: 'tos.html',
+    // Privacy policy url.
+    privacyPolicyUrl: 'privacy.html'
+  };
+
+// Used to set Auth to Local Storage so Persistent on machine
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+
+//function Monitors for Auth Change via FirebaseAUth
+firebase.auth().onAuthStateChanged(function(user) {
+  $("#insertButton").empty()
+  var mainButtonCode = $("<btn>")
+  mainButtonCode.attr("class","btn btn-secondary")
+  var buttonMsg = $("<span>")
+  if (user) {
+    // User is signed in.
+    var displayName = user.displayName;
+    var email = user.email;
+    var emailVerified = user.emailVerified;
+    var photoURL = user.photoURL;
+    var isAnonymous = user.isAnonymous;
+    var uid = user.uid;
+    var providerData = user.providerData;
+    $("#firebaseAuthModal").modal('hide')
+    mainButtonCode.attr("id","signOut")
+    buttonMsg.text("Sign Out...")
+    // ...
+  } else {
+    mainButtonCode.attr("id","login")
+    mainButtonCode.attr("data-toggle","modal")
+    mainButtonCode.attr("data-target","#firebaseAuthModal")
+    buttonMsg.text("Login...")
+  }
+  mainButtonCode.append(buttonMsg)
+  $("#insertButton").append(mainButtonCode)
+});
