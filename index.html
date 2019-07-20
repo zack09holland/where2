@@ -81,8 +81,6 @@
                             </div>
                             <div class="col-6">
                                 <div class="text-left float-right mt-1" id="insertButton"></div>
-                                <div id="firebaseui-auth-container"></div>
-                                <div id="loader"></div>
                             </div>
                         </div>
                     </div>
@@ -107,50 +105,64 @@
                 <a id="anchor">
                     <div class="card">
                 </a>
-                <div class="card-body">
-                    <div class="accordion" id="accordionExample">
-                        <!-- Card for Event Results -->
-                        <div class="card shadow-md">
-                            <!-- Card Header is also a Button to Collapse the Card -->
-                            <div class="card-header" id="headingOne">
-                                <h2 class="mb-0 text-center">
-                                    <button class="btn btn-link cardFont" type="button" data-toggle="collapse"
-                                        data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        Events
-                                    </button>
-                                </h2>
-                            </div>
-                            <!-- This is the Collapse Content that is Hidden -->
-                            <div id="collapseOne" class="collapse scrollable" aria-labelledby="headingOne"
-                                data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="accordion" id="accordionExample">
+                                <!-- Card for Event Results -->
+                                <div class="card shadow-md">
+                                    <!-- Card Header is also a Button to Collapse the Card -->
+                                    <div class="card-header" id="headingOne">
+                                        <h2 class="mb-0 text-center">
+                                            <button class="btn btn-link cardFont" type="button" data-toggle="collapse"
+                                                data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                Events
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <!-- This is the Collapse Content that is Hidden -->
+                                    <div id="collapseOne" class="collapse scrollable" aria-labelledby="headingOne"
+                                        data-parent="#accordionExample">
 
-                            </div>
-                        </div>
-                        <!-- Card for Restaurant Results -->
-                        <div class="card shadow-md">
-                            <!-- Card Header is also a Button to Collapse the Card -->
-                            <div class="card-header" id="headingTwo">
-                                <h2 class="mb-0 text-center">
-                                    <button class="btn btn-link collapsed cardFont" type="button" data-toggle="collapse"
-                                        data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        Restaurants
-                                    </button>
-                                </h2>
-                            </div>
-                            <!-- This is the Collapse Content that is Hidden -->
-                            <div id="collapseTwo" class="collapse scrollable" aria-labelledby="headingTwo"
-                                data-parent="#accordionExample">
-                                <div class="card-body">
-                                    <div id="yelp-data-wrapper"></div>
-                                    <div id="geocode-location-details"></div>
+                                    </div>
+                                </div>
+                                <!-- Card for Restaurant Results -->
+                                <div class="card shadow-md">
+                                    <!-- Card Header is also a Button to Collapse the Card -->
+                                    <div class="card-header" id="headingTwo">
+                                        <h2 class="mb-0 text-center">
+                                            <button class="btn btn-link collapsed cardFont" type="button" data-toggle="collapse"
+                                                data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                Restaurants
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <!-- This is the Collapse Content that is Hidden -->
+                                    <div id="collapseTwo" class="collapse scrollable" aria-labelledby="headingTwo"
+                                        data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div id="yelp-data-wrapper"></div>
+                                            <div id="geocode-location-details"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>
+    <!-- Button trigger modal -->
+    
+      
+      <!-- Modal -->
+    <div class="modal fade" id="firebaseAuthModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="firebaseui-auth-container"></div>
+                    <div id="loader"></div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>

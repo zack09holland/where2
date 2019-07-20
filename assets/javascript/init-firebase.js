@@ -40,7 +40,6 @@ var uiConfig = {
     signInFlow: 'popup',
     signInOptions: [
       // Leave the lines as is for the providers you want to offer your users.
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
     ],
     // Terms of service url.
@@ -67,16 +66,18 @@ firebase.auth().onAuthStateChanged(function(user) {
     var uid = user.uid;
     var providerData = user.providerData;
     console.log("Who: " + displayName)
+    $("#firebaseAuthModal").modal('hide')
     mainButtonCode.attr("id","signOut")
     buttonMsg.text("Sign Out...")
     // ...
     console.log("User Authenticated")
   } else {
     mainButtonCode.attr("id","login")
+    mainButtonCode.attr("data-toggle","modal")
+    mainButtonCode.attr("data-target","#firebaseAuthModal")
     buttonMsg.text("Login...")
     console.log("User NOT Authenticated")
   }
   mainButtonCode.append(buttonMsg)
   $("#insertButton").append(mainButtonCode)
 });
-
