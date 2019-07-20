@@ -1,10 +1,17 @@
 /// Javascript Code Below
 
-// If no Eventbrite results, no Yelp results, or 
+// Event and restaurant results
+var eventbriteResults = true;
+var yelpResults = true;
+var zomatoResults = true;
+
+// If no Eventbrite results, no Yelp results, and  
 // no Zomato results
 // then show error message
+// and hide accordion
 function noResultsErrorMsg() {
-    $('#form-error-msgs').removeClass('d-none');
+    $('#form-error-msgs').removeClass('d-none')
+    $('#contentDetails').addClass('d-none');
     // Remove data from Eventbrite, Yelp, Zomato
     // containers if error msg
     $('#collapseOne').empty();
@@ -16,6 +23,11 @@ function noResultsErrorMsg() {
 // then remove form error message
 function removeErrorMsgIfResults() {
     $('#form-error-msgs').addClass('d-none');
+    // Show #contentDetails which
+    // shows events/restaurants DIV
+    $('#contentDetails').removeClass('d-none');
+    $('#event-results-card').removeClass('d-none');
+    $('#restaurants-results-card').removeClass('d-none');
 }
 
 var that = this;
@@ -136,9 +148,16 @@ var where2Application = {
                 console.log(data.nearby_restaurants);
                 removeErrorMsgIfResults();
                 renderZomatoGeocode(data);
+                $('#restaurants-results-card').removeClass('d-none');
             // Error callback function    
             }, function() {
-                noResultsErrorMsg();
+                zomatoResults = false;
+                if(!yelpResults && !zomatoResults) {
+                    $('#restaurants-results-card').addClass('d-none');
+                }
+                if(!eventbriteResults && !yelpResults && !zomatoResults) {
+                    noResultsErrorMsg();
+                }
             });
         },
         queryZomatoLocationsDetails : function () {
@@ -222,10 +241,17 @@ var where2Application = {
                 console.log("Yelp API data: ");
                 var yelpBusinesses = data.businesses;
                 removeErrorMsgIfResults();
+                $('#restaurants-results-card').removeClass('d-none');
                 renderYelpData(yelpBusinesses);
             // Yelp API fail    
             }, function() {
-                noResultsErrorMsg();
+                yelpResults = false;
+                if(!yelpResults && !zomatoResults) {
+                    $('#restaurants-results-card').addClass('d-none');
+                }
+                if(!eventbriteResults && !yelpResults && !zomatoResults) {
+                    noResultsErrorMsg();
+                }
             });
         }
     }
@@ -251,9 +277,16 @@ function renderEvent(queryData) {
     // Check if queryData length is 0, or array is empty
     // then show error messages
     if(queryData.length === 0) {
-        noResultsErrorMsg();
+        eventbriteResults = false;
+
+         $('#event-results-card').addClass('hide');
+
+         if(!eventbriteResults && !yelpResults && !zomatoResults) {
+            noResultsErrorMsg();
+        }
     }    
     else {
+        $('#event-results-card').removeClass('hide');
         removeErrorMsgIfResults();
         for (var i = 0; i < queryData.length; i++) {
             if(queryData[i].venue.address.address_1 === null){

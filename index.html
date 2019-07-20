@@ -120,42 +120,44 @@
                 <a id="anchor">
                     <div class="card">
                 </a>
-                <div class="card-body">
-                    <div class="accordion" id="accordionExample">
-                        <!-- Card for Event Results -->
-                        <div class="card shadow-md">
-                            <!-- Card Header is also a Button to Collapse the Card -->
-                            <div class="card-header" id="headingOne">
-                                <h2 class="mb-0 text-center">
-                                    <button class="btn btn-link cardFont" type="button" data-toggle="collapse"
-                                        data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        Events
-                                    </button>
-                                </h2>
-                            </div>
-                            <!-- This is the Collapse Content that is Hidden -->
-                            <div id="collapseOne" class="collapse scrollable" aria-labelledby="headingOne"
-                                data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="accordion" id="accordionExample">
+                                <!-- Card for Event Results -->
+                                <div class="card shadow-md" id="event-results-card">
+                                    <!-- Card Header is also a Button to Collapse the Card -->
+                                    <div class="card-header" id="headingOne">
+                                        <h2 class="mb-0 text-center">
+                                            <button class="btn btn-link cardFont" type="button" data-toggle="collapse"
+                                                data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                Events
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <!-- This is the Collapse Content that is Hidden -->
+                                    <div id="collapseOne" class="collapse scrollable" aria-labelledby="headingOne"
+                                        data-parent="#accordionExample">
 
-                            </div>
-                        </div>
-                        <!-- Card for Restaurant Results -->
-                        <div class="card shadow-md">
-                            <!-- Card Header is also a Button to Collapse the Card -->
-                            <div class="card-header" id="headingTwo">
-                                <h2 class="mb-0 text-center">
-                                    <button class="btn btn-link collapsed cardFont" type="button" data-toggle="collapse"
-                                        data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        Restaurants
-                                    </button>
-                                </h2>
-                            </div>
-                            <!-- This is the Collapse Content that is Hidden -->
-                            <div id="collapseTwo" class="collapse scrollable" aria-labelledby="headingTwo"
-                                data-parent="#accordionExample">
-                                <div class="card-body">
-                                    <div id="yelp-data-wrapper"></div>
-                                    <div id="geocode-location-details"></div>
+                                    </div>
+                                </div>
+                                <!-- Card for Restaurant Results -->
+                                <div class="card shadow-md" id="restaurants-results-card">
+                                    <!-- Card Header is also a Button to Collapse the Card -->
+                                    <div class="card-header" id="headingTwo">
+                                        <h2 class="mb-0 text-center">
+                                            <button class="btn btn-link collapsed cardFont" type="button" data-toggle="collapse"
+                                                data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                Restaurants
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <!-- This is the Collapse Content that is Hidden -->
+                                    <div id="collapseTwo" class="collapse scrollable" aria-labelledby="headingTwo"
+                                        data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div id="yelp-data-wrapper"></div>
+                                            <div id="geocode-location-details"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
