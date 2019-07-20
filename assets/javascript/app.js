@@ -148,9 +148,16 @@ var where2Application = {
                 console.log(data.nearby_restaurants);
                 removeErrorMsgIfResults();
                 renderZomatoGeocode(data);
+                $('#restaurants-results-card').removeClass('d-none');
             // Error callback function    
             }, function() {
-                noResultsErrorMsg();
+                zomatoResults = false;
+                if(!yelpResults && !zomatoResults) {
+                    $('#restaurants-results-card').addClass('d-none');
+                }
+                if(!eventbriteResults && !yelpResults && !zomatoResults) {
+                    noResultsErrorMsg();
+                }
             });
         },
         queryZomatoLocationsDetails : function () {
