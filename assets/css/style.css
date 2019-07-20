@@ -43,7 +43,7 @@ div.form-group{
     position:absolute;
     z-index:1;
     top:100px; /* change to whatever you want */
-    width: 960px;
+    max-width: 960px;
     margin: 0 auto;
     left:0;
     right:0;
