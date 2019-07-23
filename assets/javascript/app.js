@@ -357,7 +357,7 @@ $('#Search').on("click", function(){
         that.where2Application.eventbriteAPI.queryEventbrite()
         that.where2Application.yelpAPI.queryYelp()
         displayFixes()
-        document.getElementById("filler").style.height = '650px';
+        document.getElementById("filler").style.height = '200px';
 
     }
 });
