@@ -38,6 +38,20 @@ Steps for Using the Site:
   - Worked with Suzanne on implementing a fix for Zomato API where image URLs were blank
   - Worked closely with Zach on issues as we were stuck with API or UI design problems.
   - Lot's of Bug Fixes
+  
+- Zachary Holland  [GitHub Profile](https://github.com/zack09holland)
+  - Project Management during 2nd half; delegated tasks to other group members as we got to D-Day
+  - Wrote the API ajax calls for querying Yelp and Eventbrite. 
+  - Developed the card accoridion content container 
+  - Created the initial card generator for the API data
+  - Primary front end and UI design:
+   - Design implementations were taken from other sites such as Eventbrite and Yelp.
+   - Developed the smooth scrolling for the website when clicking the submit button
+   - Implemented UI features to simplify user experience; 
+      - Put a to top button in the footer but only when at certain part of page
+      - Created an inner scroll inside the card content accordion to contain the results to a managable view
+   - Designed the image carousel with full scale background images
+   
 
 
 
