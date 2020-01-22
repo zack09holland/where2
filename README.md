@@ -2,7 +2,7 @@
 Where2 is an aggregation based search engine for locating Restaurants and Events for an upcoming vacation.  The original plan was to build an application that would allow clients to plan their trip in advance favoriting places they wanted to visit while out of town.
 
 ## Website:
-[Where2](https://hollyw00d.github.io/group-project1-uw-coding-bootcamp/)
+[Where2](https://zack09holland.github.io/Where2/)
 
 ### How-To:
 Steps for Using the Site:
