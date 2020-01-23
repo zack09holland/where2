@@ -1,13 +1,13 @@
 // TODO: Replace the following with your app's Firebase project configuration
 var firebaseConfig = {
-    apiKey: "AIzaSyBNpstskQf4JklIHw__h70G8JBi_ZvCSZc",
-    authDomain: "where2-hollyw00d.firebaseapp.com",
-    databaseURL: "https://where2-hollyw00d.firebaseio.com",
-    projectId: "where2-hollyw00d",
-    storageBucket: "",
-    messagingSenderId: "714594318842",
-    appId: "1:714594318842:web:502c8665f14c0695"
-};
-  
+    apiKey: "AIzaSyCf8sOoqpSc0EOtxqhD3cnBKuVYFcNRXyc",
+    authDomain: "where2-6587b.firebaseapp.com",
+    databaseURL: "https://where2-6587b.firebaseio.com",
+    projectId: "where2-6587b",
+    storageBucket: "where2-6587b.appspot.com",
+    messagingSenderId: "103830531508",
+    appId: "1:103830531508:web:e1b110518f2ab6cac096e1",
+    measurementId: "G-N8DT75X4CK"
+  };
 // Initialize Firebase
 var defaultApplication = firebase.initializeApp(firebaseConfig);

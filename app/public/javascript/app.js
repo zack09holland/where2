@@ -221,13 +221,15 @@ var where2Application = {
             }).then(function(data){
                 console.log(that.where2Application.searchParams.destination)
                 console.log(data._embedded.events)
+                var eventData = data._embedded.events;
+                renderEvent(eventData)
                 that.where2Application.searchResults.eventbriteResults = true;
                 that.where2Application.searchResults.eventbriteComplete = true;
-                that.where2Application.eventbriteAPI.searchResults.previousResult = data
-                that.where2Application.eventbriteAPI.searchResults.perPage = data.pagination["page_size"]
-                that.where2Application.eventbriteAPI.searchResults.pageNumber = data.pagination["page_number"]
-                that.where2Application.eventbriteAPI.searchResults.pageCount = data.pagination["page_count"]
-                renderEvent(data.events)               
+                // that.where2Application.eventbriteAPI.searchResults.previousResult = data
+                // that.where2Application.eventbriteAPI.searchResults.perPage = data.pagination["page_size"]
+                // that.where2Application.eventbriteAPI.searchResults.pageNumber = data.pagination["page_number"]
+                // that.where2Application.eventbriteAPI.searchResults.pageCount = data.pagination["page_count"]
+                // renderEvent(eventData)               
             },
             function(){
                 that.where2Application.searchResults.eventbriteResults = false;
@@ -371,7 +373,8 @@ $('#Search').on("click", function(){
     }
 });
 function renderEvent(queryData) {
-    $("#collapseOne").empty();
+    console.log(queryData)
+    $("#event-data-wrapper").empty();
     //$("#gifContainer").empty();
 
     // Check if queryData length is 0, or array is empty
@@ -387,19 +390,21 @@ function renderEvent(queryData) {
         //$('#event-results-card').show();
         //removeErrorMsgIfResults();
         for (var i = 0; i < queryData.length; i++) {
-            if(queryData[i].venue.address.address_1 === null){
-                var eventAddress = queryData[i].venue.address.localized_area_display;
-            }else{
-                var eventAddress = queryData[i].venue.address.address_1+", "+queryData[i].venue.address.localized_area_display;
-            }
-            var eventDate = queryData[i].start.local;
-            var eventName = queryData[i].name.text;
-            var eventImg = queryData[i].logo.url;
+            // if(queryData[i]._embedded.venues[0].address.line1 === null){
+            //     var eventAddress = queryData[i].venue.address.localized_area_display;
+            // }else{
+            //     var eventAddress = queryData[i]._embedded.venues[0].address.line1 +", "+queryData[i]._embedded.venues[0].city.name;
+            // }
+            // var eventAddress = queryData[i]._embedded.venues[0].address.line1 +", "+queryData[i]._embedded.venues[0].city.name;
+            var eventAddress = queryData[i]._embedded.venues[0].name + " in " + queryData[i]._embedded.venues[0].city.name;
+            var eventDate = queryData[i].dates.start.localDate +" @ "+ queryData[i].dates.start.localTime;
+            var eventName = queryData[i].name;
+            var eventImg = queryData[i].images[0].url;
             if(!eventImg){eventImg = "assets/images/defaultEvent.jpg"}
             var eventURL = queryData[i].url;
-            that.where2Application.printResultCard("collapseOne",eventImg,eventName,eventAddress,eventDate,null,null,null,eventURL,"Results from EventBrite")           
+            that.where2Application.printResultCard("event-data-wrapper",eventImg,eventName,eventAddress,eventDate,null,null,null,eventURL,"Buy tickets here!")           
         }
-        $("#errorNoScroll").attr("href","")
+        // $("#errorNoScroll").attr("href","")
     }
 }
 
@@ -417,7 +422,7 @@ function renderYelpData(queryData) {
         var rating = 'Rating: ' + queryData[i].rating;
         var reviewCount = 'Review Count: ' + queryData[i].review_count;
         var yelpPage = queryData[i].url;
-        that.where2Application.printResultCard("yelp-data-wrapper",yelpImg,yelpBusinessName,yelpCleanAddress,displayPhone,price,rating,reviewCount,yelpPage,"Results from Yelp")
+        that.where2Application.printResultCard("yelp-data-wrapper",yelpImg,yelpBusinessName,yelpCleanAddress,displayPhone,price,rating,reviewCount,yelpPage,"Yelp page")
     }
 
 }
