@@ -19,6 +19,7 @@ Steps for Using the Site:
 - Firebase Database - Site is backed by Firebase for User Favorites Tracking
   - * When User is Authenticated - User Account created for Favorites in Realtime Database *
 - Bootstrap - Primary CSS - Modal, Accordian, Carousel, Grid, Button, Form Control
+- Node JS - Running javascript API calls on server 
 - Moment JS - Used for the Eventbrite API to format Time properly for queries
 - Yelp API - Used for Restaurant Results
 - Zomato API - Used for Restaurant Results - Had plans to use thier other API's for Restaurant Results
